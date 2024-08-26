@@ -25,7 +25,7 @@ public class JpaConfig {
             EntityManagerFactoryBuilder builder, @Qualifier("usersDataSource") DataSource dataSource) {
         Map<String, Object> props = new HashMap<>();
         props.put("hibernate.hbm2ddl.auto", "update");
-        props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect"); // Specify the dialect for MySQL
+        props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect"); // Specify the dialect
         return builder
                 .dataSource(dataSource)
                 .packages("com.backend.tomagram.models.users") // Adjust package to your entity package
@@ -46,7 +46,7 @@ public class JpaConfig {
             EntityManagerFactoryBuilder builder, @Qualifier("postsDataSource") DataSource dataSource) {
         Map<String, Object> props = new HashMap<>();
         props.put("hibernate.hbm2ddl.auto", "update");
-        props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect"); // Specify the dialect for MySQL
+        props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect"); // Specify the dialect
         return builder
                 .dataSource(dataSource)
                 .packages("com.backend.tomagram.models.posts")
