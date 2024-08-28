@@ -38,7 +38,7 @@ jobs:
     
     # build image
     - name: Build Docker image
-      run: docker build -t $DOCKER_USERNAME/tomagram-service-a:latest .
+      run: docker build -t $DOCKER_USERNAME/tomagram-service-a:latest -f tomagram/Dockerfile tomagram
 
     # Push Image into DockHub registry   
     - name: Push Docker image
