@@ -8,7 +8,7 @@ FROM openjdk:17-jdk-alpine
 WORKDIR /app
 
 # Copy the project JAR file into the container at /app
-COPY target/tomagram.jar /app/tomagram.jar
+COPY target/tomagram-0.0.1-SNAPSHOT.jar /app/tomagram.jar
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
