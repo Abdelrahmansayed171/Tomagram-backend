@@ -1,0 +1,47 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
+    steps:
+    # Pull Github Repo Changes
+    - uses: actions/checkout@v4.1.7
+    
+    # Pull openjdk:17-jdk
+    - name: set up JDK 17
+      uses: actions/setup-java@v4.2.2
+      with:
+        java-version: '17'
+        
+    # Maven Build, install dependencies Producing target with .jar file
+    - name: Build with Maven
+      run: mvn clean package -DskipTests
+
+    # Login into Docker Hub
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ DOCKER_USERNAME }}" --password-stdin
+    
+    # build image
+    - name: Build Docker image
+      run: docker build -t $DOCKER_USERNAME/tomagram-service-a:latest .
+
+    # Push Image into DockHub registry   
+    - name: Push Docker image
+      run: docker push $DOCKER_USERNAME/tomagram-service-a:latest
+
+    # - name: Deploy with Docker Compose
+    #   run: docker-compose up -d
+
+    
+
