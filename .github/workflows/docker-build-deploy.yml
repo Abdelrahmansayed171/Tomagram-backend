@@ -23,6 +23,7 @@ jobs:
       uses: actions/setup-java@v4.2.2
       with:
         java-version: '17'
+        distribution: openjdk
         
     # Maven Build, install dependencies Producing target with .jar file
     - name: Build with Maven
