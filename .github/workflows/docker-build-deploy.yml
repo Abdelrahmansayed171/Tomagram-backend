@@ -19,22 +19,26 @@ jobs:
     - uses: actions/checkout@v4.1.7
     
     # Pull openjdk:17-jdk
-    - name: set up JDK 17
+    - name: Set up JDK 22
       uses: actions/setup-java@v4.2.2
       with:
-        java-version: '17'
-        
+        java-version: 22
+        distribution: oracle
+
+    - name: Navigate to project directory
+      run: cd tomagram && ls -la
+    
     # Maven Build, install dependencies Producing target with .jar file
     - name: Build with Maven
-      run: mvn clean package -DskipTests
+      run: cd tomagram && mvn clean package -DskipTests
 
     # Login into Docker Hub
     - name: Log in to Docker Hub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ DOCKER_USERNAME }}" --password-stdin
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
     
     # build image
     - name: Build Docker image
-      run: docker build -t $DOCKER_USERNAME/tomagram-service-a:latest .
+      run: docker build -t $DOCKER_USERNAME/tomagram-service-a:latest -f tomagram/Dockerfile tomagram
 
     # Push Image into DockHub registry   
     - name: Push Docker image
