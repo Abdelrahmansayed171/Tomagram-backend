@@ -2,7 +2,7 @@ FROM ubuntu:latest
 LABEL authors="Abdelrahman Sayed"
 
 # Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jdk-alpine
+FROM openjdk:22-oracle
 
 # Set the working directory in the container
 WORKDIR /app
