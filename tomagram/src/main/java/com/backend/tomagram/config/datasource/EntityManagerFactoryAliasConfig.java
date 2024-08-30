@@ -1,4 +1,4 @@
-package com.backend.tomagram.config;
+package com.backend.tomagram.config.datasource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

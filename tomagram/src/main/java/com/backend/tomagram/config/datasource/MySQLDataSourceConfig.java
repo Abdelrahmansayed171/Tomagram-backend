@@ -1,4 +1,4 @@
-package com.backend.tomagram.config;
+package com.backend.tomagram.config.datasource;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
