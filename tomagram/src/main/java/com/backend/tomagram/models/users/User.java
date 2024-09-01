@@ -19,8 +19,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-
 public class User implements UserDetails {
 
     @Id
@@ -60,6 +58,68 @@ public class User implements UserDetails {
 
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
+
+
+    // Private constructor to enforce the use of the builder
+    private User(UserBuilder builder) {
+        this.name = builder.name;
+        this.username = builder.username;
+        this.email = builder.email;
+        this.password = builder.password;
+        this.birthdate = builder.birthdate;
+        this.role = builder.role;
+    }
+
+    // Static method to return a new builder instance
+    public static UserBuilder builder() {
+        return new UserBuilder();
+    }
+
+    // Inner static class for the builder pattern
+    public static class UserBuilder {
+        private String name;
+        private String username;
+        private String email;
+        private String password;
+        private LocalDate birthdate;
+
+        private Role role;
+
+        public UserBuilder role(Role role){
+            this.role = role;
+            return this;
+        }
+
+        public UserBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public UserBuilder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public UserBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public UserBuilder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public UserBuilder birthdate(LocalDate birthdate) {
+            this.birthdate = birthdate;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
+    }
+
 
 
     /*
