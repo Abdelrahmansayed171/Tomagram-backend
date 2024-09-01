@@ -3,14 +3,11 @@ package com.backend.tomagram.service;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
-import io.jsonwebtoken.io.IOException;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.security.PrivateKey;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
