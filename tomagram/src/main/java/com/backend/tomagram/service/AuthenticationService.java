@@ -30,7 +30,7 @@ public class AuthenticationService {
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword())) // Password encoding
-                .birthdate(request.getBirthdate()) // Correctly passing LocalDate
+                .birthdate(LocalDate.parse(request.getBirthdate(), DateTimeFormatter.ISO_DATE)) // Correctly passing LocalDate
                 .role(Role.USER)
                 .build();
 
