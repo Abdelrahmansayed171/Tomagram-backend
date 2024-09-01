@@ -1,4 +1,4 @@
-package com.backend.tomagram.config.datasource;
+package com.backend.tomagram.config.database;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;

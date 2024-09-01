@@ -1,4 +1,4 @@
-package com.backend.tomagram.config.datasource;
+package com.backend.tomagram.config.database;
 
 
 import com.mongodb.client.MongoClients;
