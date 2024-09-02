@@ -38,4 +38,9 @@ public class SecurityConfig {
 
         return http.build();
     }
+    /*
+    The authenticationProvider method in your Spring Security configuration is responsible for defining how authentication is performed in your application.
+    Specifically, it configures the strategy and components that will be used to verify user credentials and load user-specific data (such as roles and authorities).
+    When a user tries to log in, typically by sending a POST request to an authentication endpoint (e.g., /login or /api/auth/authenticate)
+    */
 }
