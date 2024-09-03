@@ -20,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
     private final UserRepository userRepository;
+
+    // a Bean overrides functional interface UserDetailsService, that loads user from database by certain username
     @Bean
     public UserDetailsService userDetailsService(){
 
@@ -35,6 +37,7 @@ public class ApplicationConfig {
 //        };
     }
 
+    // define how authentication process proceeds
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();

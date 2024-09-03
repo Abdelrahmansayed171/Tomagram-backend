@@ -21,20 +21,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     // final to be automatically injected by spring by DI
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private final AuthenticationProvider authenticationProvider;
+    private final AuthenticationProvider authenticationProvider; //a custom BEAN is created in ApplicationConfig
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception{
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable) // Check Notion my CSRF Documentation
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .anyRequest().authenticated())
+                                .requestMatchers("/api/auth/**").permitAll() // make login, register routes as public routes
+                                .anyRequest().authenticated()) // another route needs to be authenticated with a valid JWT
                 .sessionManagement( session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // our application implements stateless JWT authentication
+                .authenticationProvider(authenticationProvider) // authenticationProvider determines how validate authentication process
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                // our custom JwtAuthenticationFilter will run before the built-in UsernamePasswordAuthenticationFilter
+                // to verify, validate JWT
 
         return http.build();
     }

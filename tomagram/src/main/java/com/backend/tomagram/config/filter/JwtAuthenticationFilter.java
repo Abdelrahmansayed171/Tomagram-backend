@@ -33,6 +33,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throw new IllegalArgumentException("Name cannot be null");
         }
     */
+
+
+
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -43,15 +46,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userName;
+
+//        Check if request is not required to be authenticated, so we pass the request to the following filter
         if(authHeader == null || !authHeader.startsWith("Bearer ")){
             filterChain.doFilter(request,response); // pass the request, response to the next filter (middleware)
             return;
         }
 
         jwt = authHeader.substring(7);
-        userName =  jwtService.extractUsername(jwt); // extract userEmail from JWT token;
+        userName =  jwtService.extractUsername(jwt); // extract userName from JWT token;
         if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userName);
+
+            // Lw el Token Valid, ha2ool lel spring security "el JWT da tba3na ya rayes w authenticated w zy el 3assal"
             if(jwtService.isTokenValid(jwt, userDetails)){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
