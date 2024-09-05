@@ -9,6 +9,7 @@ import com.backend.tomagram.models.users.Role;
 import com.backend.tomagram.models.users.User;
 import com.backend.tomagram.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,9 +30,12 @@ public class AuthenticationService {
 
     public ResponseEntity<?> register(RegisterRequest request) {
 
-        if(userRepository.findByUsername(request.getUsername()).isPresent()
-                || userRepository.findByEmail(request.getEmail()).isPresent()){
-            throw new UserExistsException("username or email already exists");
+//        if(userRepository.findByUsername(request.getUsername()).isPresent()
+//                || userRepository.findByEmail(request.getEmail()).isPresent()){
+//            throw new UserExistsException("username or email already exists");
+//        }
+        if (userRepository.existsById(request.getUsername())) {
+            throw new DuplicateKeyException("User with username " + request.getUsername() + " already exists.");
         }
         var user = User.builder()
                 .name(request.getName())

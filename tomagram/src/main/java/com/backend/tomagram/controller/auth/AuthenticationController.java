@@ -3,6 +3,7 @@ package com.backend.tomagram.controller.auth;
 import com.backend.tomagram.controller.exception.UserExistsException;
 import com.backend.tomagram.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class AuthenticationController {
     ){
         try {
             return authService.register(request);
-        } catch (UserExistsException e){
+        } catch (UserExistsException | DuplicateKeyException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }

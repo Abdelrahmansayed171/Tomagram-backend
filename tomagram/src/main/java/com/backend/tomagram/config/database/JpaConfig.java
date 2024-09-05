@@ -26,6 +26,12 @@ public class JpaConfig {
         Map<String, Object> props = new HashMap<>();
         props.put("hibernate.hbm2ddl.auto", "update");
         props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect"); // Specify the dialect
+
+        // Enable SQL logging
+        props.put("hibernate.show_sql", true); // Log the SQL statements
+        props.put("hibernate.format_sql", true); // Format SQL statements for better readability
+        props.put("hibernate.use_sql_comments", true); // Optional: Add comments to SQL statements for easier tracing
+        props.put("hibernate.type", "TRACE"); // Enable logging for binding parameters to SQL queries
         return builder
                 .dataSource(dataSource)
                 .packages("com.backend.tomagram.models.users") // Adjust package to your entity package
