@@ -1,5 +1,6 @@
 package com.backend.tomagram.models.posts;
 
+import com.backend.tomagram.models.users.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,29 +24,17 @@ import java.time.LocalDateTime;
 public class Post {
 
     @Id
-    @Column(name = "username", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "caption")
+    private String caption;
 
-    @Column(name = "bio")
-    private String bio;
-
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "birthdate", nullable = false)
-    private LocalDate birthdate;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @Column(name = "profile_picture")
-    private String profilePicture;
-
-    @Column(name = "gender")
-    private String gender;
+    @Column(name = "location")
+    private String location;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
