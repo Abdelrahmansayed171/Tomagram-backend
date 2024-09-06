@@ -1,10 +1,9 @@
 package com.backend.tomagram.service;
 
 
-import com.backend.tomagram.controller.auth.AuthenticationRequest;
-import com.backend.tomagram.controller.auth.AuthenticationResponse;
-import com.backend.tomagram.controller.auth.RegisterRequest;
-import com.backend.tomagram.controller.exception.UserExistsException;
+import com.backend.tomagram.dto.AuthenticationRequest;
+import com.backend.tomagram.dto.AuthenticationResponse;
+import com.backend.tomagram.dto.RegisterRequest;
 import com.backend.tomagram.models.users.Role;
 import com.backend.tomagram.models.users.User;
 import com.backend.tomagram.repository.UserRepository;

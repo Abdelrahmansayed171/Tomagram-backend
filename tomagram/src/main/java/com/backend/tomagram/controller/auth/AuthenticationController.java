@@ -1,11 +1,13 @@
 package com.backend.tomagram.controller.auth;
 
 import com.backend.tomagram.controller.exception.UserExistsException;
+import com.backend.tomagram.dto.AuthenticationRequest;
+import com.backend.tomagram.dto.AuthenticationResponse;
+import com.backend.tomagram.dto.RegisterRequest;
 import com.backend.tomagram.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.PostMapping;

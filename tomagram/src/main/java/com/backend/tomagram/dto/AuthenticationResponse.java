@@ -1,4 +1,4 @@
-package com.backend.tomagram.controller.auth;
+package com.backend.tomagram.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
