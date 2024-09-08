@@ -58,7 +58,7 @@ public class AuthenticationService {
 
         } catch (UsernameNotFoundException e) {
             // Handle the case where the user is not found
-            AuthenticationResponse response = new AuthenticationResponse("User not found: " + e.getMessage());
+            AuthenticationResponse response = new AuthenticationResponse(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 
         } catch (BadCredentialsException e) {
