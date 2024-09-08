@@ -1,10 +1,18 @@
 package com.backend.tomagram.service;
 
+import com.backend.tomagram.models.users.Role;
+import com.backend.tomagram.models.users.User;
 import com.backend.tomagram.repository.UserRepository;
 import com.backend.tomagram.util.JwtUtil;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class UserService {
@@ -16,11 +24,19 @@ public class UserService {
 
     private final
     JwtUtil jwtUtil;
+    private final
+    PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepo, JwtService jwtService, JwtUtil jwtUtil) {
+    private final
+    UserRepository userRepository;
+
+
+    public UserService(UserRepository userRepo, JwtService jwtService, JwtUtil jwtUtil, PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.userRepo = userRepo;
         this.jwtService = jwtService;
         this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
 
@@ -43,6 +59,33 @@ public class UserService {
                 .orElse(ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body("User not found"));
+    }
+
+    public void createUser(String name, String username,
+                           String email, String pass,
+                           String birthdate){
+        if(userExists(username)){
+            throw new DuplicateKeyException("User with username " + username + " already exists.");
+        }
+        var user = User.builder()
+                .name(name)
+                .username(username)
+                .email(email)
+                .password(passwordEncoder.encode(pass)) // Password encoding
+                .birthdate(LocalDate.parse(birthdate, DateTimeFormatter.ISO_DATE)) // Correctly passing LocalDate
+                .role(Role.USER)
+                .build();
+
+        userRepository.save(user);
+    }
+
+    public boolean userExists(String username){
+        return userRepo.existsById(username);
+    }
+
+    public User findUser(String username){
+        return userRepo.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not Found"));
     }
 
 }

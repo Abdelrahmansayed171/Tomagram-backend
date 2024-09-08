@@ -1,6 +1,6 @@
-package com.backend.tomagram.controller.auth;
+package com.backend.tomagram.controller;
 
-import com.backend.tomagram.controller.exception.UserExistsException;
+import com.backend.tomagram.exception.UserExistsException;
 import com.backend.tomagram.dto.AuthenticationRequest;
 import com.backend.tomagram.dto.AuthenticationResponse;
 import com.backend.tomagram.dto.RegisterRequest;
