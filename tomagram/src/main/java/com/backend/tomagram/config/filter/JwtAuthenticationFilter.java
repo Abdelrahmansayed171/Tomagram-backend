@@ -1,6 +1,7 @@
 package com.backend.tomagram.config.filter;
 
 import com.backend.tomagram.service.JwtService;
+import com.backend.tomagram.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,9 +23,14 @@ import java.io.IOException;
 @RequiredArgsConstructor // build constructor with any final field defined inside within the class
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private final
+    JwtService jwtService;
 
-    private final UserDetailsService userDetailsService;
+    private final
+    UserDetailsService userDetailsService;
+
+    private final
+    JwtUtil jwtUtil;
 
 
     /*
@@ -53,7 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        jwt = authHeader.substring(7);
+        jwt = jwtUtil.getJwt(authHeader);
         userName =  jwtService.extractUsername(jwt); // extract userName from JWT token;
         if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userName);
