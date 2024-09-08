@@ -1,5 +1,6 @@
 package com.backend.tomagram.models.users;
 
+import com.backend.tomagram.models.posts.Post;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,7 +29,7 @@ public class User implements UserDetails {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "bio")
@@ -52,6 +53,10 @@ public class User implements UserDetails {
     // Create Enum Class contains roles to ensure authorization
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    // Establish OneToMany Relationship
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Post> posts;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

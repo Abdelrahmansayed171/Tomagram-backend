@@ -27,14 +27,19 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "caption")
+    @Column(name = "content")
     private String caption;
 
     @Column(name = "location")
     private String location;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")  // Join Column must be synchronized with mappedBy in User entity
+    private User user;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
