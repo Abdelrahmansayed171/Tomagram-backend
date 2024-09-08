@@ -34,8 +34,8 @@ public class AuthenticationService {
         return ResponseEntity.ok("User Created successfully");
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        try{
+    public ResponseEntity<AuthenticationResponse> authenticate(AuthenticationRequest request) {
+        try {
             // Authenticate user by its credentials via authenticationManager
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -43,25 +43,33 @@ public class AuthenticationService {
                             request.getPassword()
                     )
             );
+
+            // Find the user by username
             var user = userService.findUser(request.getUsername());
+
+            // Generate JWT token
             var jwt = jwtService.generateToken(user);
+
+            // Return success response
             AuthenticationResponse response = AuthenticationResponse.builder()
                     .token(jwt)
                     .build();
+            return ResponseEntity.ok(response);
 
-            return ResponseEntity.ok(response).getBody();
-        } catch (UsernameNotFoundException ue){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new AuthenticationResponse("User not found: " + ue.getMessage())).getBody();
+        } catch (UsernameNotFoundException e) {
+            // Handle the case where the user is not found
+            AuthenticationResponse response = new AuthenticationResponse("User not found: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
         } catch (BadCredentialsException e) {
             // Handle invalid credentials
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new AuthenticationResponse("Invalid username or password")).getBody();
+            AuthenticationResponse response = new AuthenticationResponse("Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+
         } catch (Exception e) {
             // Handle all other exceptions
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new AuthenticationResponse("An unexpected error occurred: " + e.getMessage())).getBody();
+            AuthenticationResponse response = new AuthenticationResponse("An unexpected error occurred: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-
     }
 }

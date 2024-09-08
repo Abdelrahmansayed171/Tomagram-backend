@@ -15,9 +15,9 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping
+/*    @PostMapping
     public ResponseEntity<String> addPost(@RequestHeader("Authorization") String authHeader, @RequestBody PostRequest postRequest){
         return postService.upload(authHeader,postRequest);
-    }
+    }*/
 
 }

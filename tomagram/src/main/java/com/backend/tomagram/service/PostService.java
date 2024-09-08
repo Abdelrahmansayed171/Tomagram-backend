@@ -16,10 +16,10 @@ public class PostService {
         this.jwtService = jwtService;
         this.postRepository = postRepository;
     }
-
+/*
     public ResponseEntity<String> upload(String authHeader, PostRequest postRequest) {
         final String jwt = jwtUtil.getJwt(authHeader);
         final String username = jwtService.extractUsername(jwt);
 
-    }
+    }*/
 }

@@ -36,11 +36,6 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request
     ){
-        try {
-            return ResponseEntity.ok(authService.authenticate(request));
-        } catch(BadCredentialsException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new AuthenticationResponse("Username or password is incorrect"));
-        }
+        return authService.authenticate(request);
     }
 }
