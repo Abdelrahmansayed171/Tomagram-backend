@@ -2,6 +2,7 @@ package com.backend.tomagram.controller;
 
 import com.backend.tomagram.dto.PostRequest;
 import com.backend.tomagram.service.PostService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,14 @@ public class PostController {
         this.postService = postService;
     }
 
-/*    @PostMapping
+    @PostMapping
     public ResponseEntity<String> addPost(@RequestHeader("Authorization") String authHeader, @RequestBody PostRequest postRequest){
-        return postService.upload(authHeader,postRequest);
-    }*/
+        try {
+            postService.upload(authHeader, postRequest);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+        return ResponseEntity.ok("Post added Successfully");
+    }
 
 }

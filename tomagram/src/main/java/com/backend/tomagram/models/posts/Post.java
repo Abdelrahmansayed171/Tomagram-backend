@@ -27,7 +27,7 @@ public class Post {
     private Long id;
 
     @Column(name = "content")
-    private String caption;
+    private String content;
 
     @Column(name = "location")
     private String location;

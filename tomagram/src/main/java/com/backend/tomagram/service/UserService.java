@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 public class UserService {
-    private final
+    private static
     UserRepository userRepo;
 
     private final
@@ -32,7 +32,7 @@ public class UserService {
 
 
     public UserService(UserRepository userRepo, JwtService jwtService, JwtUtil jwtUtil, PasswordEncoder passwordEncoder, UserRepository userRepository) {
-        this.userRepo = userRepo;
+        UserService.userRepo = userRepo;
         this.jwtService = jwtService;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
@@ -83,7 +83,7 @@ public class UserService {
         return userRepo.existsById(username);
     }
 
-    public User findUser(String username){
+    public static User findUser(String username){
         return userRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username or Password is not valid"));
     }
