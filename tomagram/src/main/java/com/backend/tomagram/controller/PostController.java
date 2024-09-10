@@ -1,10 +1,14 @@
 package com.backend.tomagram.controller;
 
 import com.backend.tomagram.dto.PostRequest;
+import com.backend.tomagram.dto.PostUpdateRequest;
 import com.backend.tomagram.service.PostService;
+import jakarta.persistence.PostUpdate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequestMapping("/api/post")
@@ -24,6 +28,19 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
         return ResponseEntity.ok("Post added Successfully");
+    }
+
+    @PutMapping
+    public ResponseEntity<String> updatePost(@RequestHeader("Authorization") String authHeader, @RequestParam PostUpdateRequest postUpdateRequest){
+        try {
+            postService.update(authHeader, postUpdateRequest);
+        } catch (AccessDeniedException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+        return ResponseEntity.ok("Post updated Successfully");
     }
 
 }

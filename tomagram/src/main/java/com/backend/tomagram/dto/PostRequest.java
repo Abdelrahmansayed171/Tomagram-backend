@@ -8,5 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 public class PostRequest {
     private String content;
+    private String location;
 }
 
