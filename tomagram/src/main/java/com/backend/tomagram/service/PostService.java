@@ -3,19 +3,22 @@ package com.backend.tomagram.service;
 import com.backend.tomagram.dto.PostRequest;
 import com.backend.tomagram.dto.PostUpdateRequest;
 import com.backend.tomagram.models.posts.Post;
+import com.backend.tomagram.models.users.User;
 import com.backend.tomagram.repository.PostRepository;
 import com.backend.tomagram.util.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 @Component
 public class PostService {
     private final JwtUtil jwtUtil;
     private final JwtService jwtService;
     private final PostRepository postRepository;
-    public PostService(JwtUtil jwtUtil, JwtService jwtService, PostRepository postRepository) {
+
+    public PostService(JwtUtil jwtUtil, JwtService jwtService, PostRepository postRepository, UserService userService) {
         this.jwtUtil = jwtUtil;
         this.jwtService = jwtService;
         this.postRepository = postRepository;
@@ -57,6 +60,20 @@ public class PostService {
         } catch (Exception e){
             throw new RuntimeException("Error Updating post: " + e.getMessage());
         }
+    }
+
+    public void deletePost(Long id){
+        postRepository.deleteById(id);
+    }
+
+    public Post getPost(Long id) throws EntityNotFoundException{
+        return postRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Post Not Found"));
+    }
+
+    public List<Post> getUserPosts(String username){
+        User user = UserService.findUser(username);
+        return postRepository.findByUser(user);
     }
 
 }
