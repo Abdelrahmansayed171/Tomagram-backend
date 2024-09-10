@@ -18,7 +18,7 @@ public class PostService {
     private final JwtService jwtService;
     private final PostRepository postRepository;
 
-    public PostService(JwtUtil jwtUtil, JwtService jwtService, PostRepository postRepository, UserService userService) {
+    public PostService(JwtUtil jwtUtil, JwtService jwtService, PostRepository postRepository) {
         this.jwtUtil = jwtUtil;
         this.jwtService = jwtService;
         this.postRepository = postRepository;
@@ -63,13 +63,17 @@ public class PostService {
     }
 
     public void deletePost(Long id){
+        postRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("post Not found"));
         postRepository.deleteById(id);
     }
+
+
 
     public Post getPost(Long id) throws EntityNotFoundException{
         return postRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Post Not Found"));
     }
+
 
     public List<Post> getUserPosts(String username){
         User user = UserService.findUser(username);

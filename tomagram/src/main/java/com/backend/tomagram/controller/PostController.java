@@ -54,4 +54,14 @@ public class PostController {
         return postService.getUserPosts(username);
     }
 
+    @DeleteMapping
+    public ResponseEntity<String> deletePost(@RequestParam("id") Long id){
+        try{
+            postService.deletePost(id);
+            return ResponseEntity.ok("Post Deleted successfully");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
 }
