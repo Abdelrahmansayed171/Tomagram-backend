@@ -1,6 +1,5 @@
 package com.backend.tomagram.controller;
 
-import com.backend.tomagram.dto.BioUpdateRequest;
 import com.backend.tomagram.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +17,9 @@ public class UserController {
 
     @PutMapping("/bio")
     public ResponseEntity<String> updateUserBio(@RequestHeader("Authorization") String authHeader,
-                                                @RequestBody BioUpdateRequest bioRequest){
+                                                @RequestParam("bio") String bio){
 
-        return userService.updateBio(authHeader,bioRequest.getBio());
+        return userService.updateBio(authHeader, bio);
     }
 
     @GetMapping("/bio/{username}")
