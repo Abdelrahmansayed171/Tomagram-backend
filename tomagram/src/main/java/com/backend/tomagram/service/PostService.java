@@ -53,6 +53,9 @@ public class PostService {
 
         if(postUpdateRequest.getContent() != null){
             post.setContent(postUpdateRequest.getContent());
+        }
+
+        if(postUpdateRequest.getLocation() != null){
             post.setLocation(postUpdateRequest.getLocation());
         }
 

@@ -40,7 +40,7 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
         return ResponseEntity.ok("Post updated Successfully");
     }
