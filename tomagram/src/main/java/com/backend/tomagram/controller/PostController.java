@@ -2,6 +2,7 @@ package com.backend.tomagram.controller;
 
 import com.backend.tomagram.dto.PostRequest;
 import com.backend.tomagram.dto.PostUpdateRequest;
+import com.backend.tomagram.dto.UserPostsResponse;
 import com.backend.tomagram.models.posts.Post;
 import com.backend.tomagram.service.PostService;
 import org.springframework.http.HttpStatus;
@@ -50,7 +51,7 @@ public class PostController {
     }
 
     @GetMapping("/user")
-    public List<Post> getPosts(@RequestParam("username") String username){
+    public List<UserPostsResponse> getPosts(@RequestParam("usr") String username){
         return postService.getUserPosts(username);
     }
 

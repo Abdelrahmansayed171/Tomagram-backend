@@ -2,6 +2,7 @@ package com.backend.tomagram.service;
 
 import com.backend.tomagram.dto.PostRequest;
 import com.backend.tomagram.dto.PostUpdateRequest;
+import com.backend.tomagram.dto.UserPostsResponse;
 import com.backend.tomagram.models.posts.Post;
 import com.backend.tomagram.models.users.User;
 import com.backend.tomagram.repository.PostRepository;
@@ -75,9 +76,15 @@ public class PostService {
     }
 
 
-    public List<Post> getUserPosts(String username){
+    public List<UserPostsResponse> getUserPosts(String username){
         User user = UserService.findUser(username);
-        return postRepository.findByUser(user);
+        List<Post> posts = postRepository.findByUser(user);
+        return posts.stream().map(post -> UserPostsResponse.builder()
+                    .id(post.getId())
+                    .content(post.getContent())
+                    .Location(post.getLocation())
+                    .username(post.getUser().getUsername())
+                    .build()).toList();
     }
 
 }
