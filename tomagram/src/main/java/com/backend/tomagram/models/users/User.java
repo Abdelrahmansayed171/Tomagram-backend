@@ -1,5 +1,6 @@
 package com.backend.tomagram.models.users;
 
+import com.backend.tomagram.models.Follows;
 import com.backend.tomagram.models.posts.Post;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -57,6 +59,12 @@ public class User implements UserDetails {
     // Establish OneToMany Relationship
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts;
+
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Follows> following;
+
+    @OneToMany(mappedBy = "followed", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Follows> followers;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
