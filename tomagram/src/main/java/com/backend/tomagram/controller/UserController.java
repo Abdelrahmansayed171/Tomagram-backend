@@ -4,7 +4,6 @@ import com.backend.tomagram.dto.BioUpdateRequest;
 import com.backend.tomagram.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
