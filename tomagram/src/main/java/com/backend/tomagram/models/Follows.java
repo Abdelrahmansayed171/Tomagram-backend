@@ -22,16 +22,15 @@ public class Follows {
     private FollowsId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("followerUsername")
-    @JoinColumn(name="follower_username")
+    @MapsId("followerUsername") // variable name in FollowsId class
+    @JoinColumn(name="follower_username") // column name in follows table
     private User follower;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("followedUsername")
-    @JoinColumn(name = "followed_username")
+    @MapsId("followedUsername") // variable name in FollowsId class
+    @JoinColumn(name = "followed_username") // column name in follows table
     private User followed;
 
     @CreationTimestamp
     private LocalDateTime followedAt;
-
 }

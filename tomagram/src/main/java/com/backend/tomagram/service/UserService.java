@@ -4,6 +4,7 @@ import com.backend.tomagram.models.users.Role;
 import com.backend.tomagram.models.users.User;
 import com.backend.tomagram.repository.UserRepository;
 import com.backend.tomagram.util.JwtUtil;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,4 +89,14 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Username or Password is not valid"));
     }
 
+    public void deleteUser(String authHeader) {
+        String jwt = jwtUtil.getJwt(authHeader);
+        String username = jwtService.extractUsername(jwt);
+        User user = userRepo.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User not found."));
+        try{
+            userRepo.delete(user);
+        } catch (Exception e){
+            throw new RuntimeException("Error Deleting User: ", e);
+        }
+    }
 }
