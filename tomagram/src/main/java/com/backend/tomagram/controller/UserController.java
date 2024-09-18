@@ -1,5 +1,6 @@
 package com.backend.tomagram.controller;
 
+import com.backend.tomagram.dto.BioUpdateRequest;
 import com.backend.tomagram.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -34,9 +35,9 @@ public class UserController {
 
     @PutMapping("/bio")
     public ResponseEntity<String> updateUserBio(@RequestHeader("Authorization") String authHeader,
-                                                @RequestParam("bio") String bio){
+                                                @RequestBody BioUpdateRequest bioUpdateRequest){
 
-        return userService.updateBio(authHeader, bio);
+        return userService.updateBio(authHeader, bioUpdateRequest.getBio());
     }
 
     @GetMapping("/bio/{username}")
