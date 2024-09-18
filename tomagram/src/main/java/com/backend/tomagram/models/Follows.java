@@ -16,9 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "follows", indexes = {
-        @Index(name = "idx_followed_username", columnList = "followed_username")
-})
+@Table(name = "follows")
 public class Follows {
     @EmbeddedId
     private FollowsId id;

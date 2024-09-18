@@ -5,6 +5,7 @@ import com.backend.tomagram.models.users.User;
 import com.backend.tomagram.repository.FollowsRepository;
 import com.backend.tomagram.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
@@ -24,6 +25,8 @@ public class FollowsService {
                     .followed(followedUser)
                     .build();
             followsRepository.save(follows);
+        } catch (UsernameNotFoundException e){
+            throw new UsernameNotFoundException("User does not exists!");
         } catch (Exception e){
             throw new RuntimeException("Error add new following");
         }
