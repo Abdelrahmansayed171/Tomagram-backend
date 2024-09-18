@@ -9,11 +9,12 @@ import com.backend.tomagram.repository.PostRepository;
 import com.backend.tomagram.util.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
-@Component
+@Service
 public class PostService {
     private final JwtUtil jwtUtil;
     private final JwtService jwtService;
