@@ -1,6 +1,7 @@
 package com.backend.tomagram.service;
 
 import com.backend.tomagram.models.Follows;
+import com.backend.tomagram.models.FollowsId;
 import com.backend.tomagram.models.users.User;
 import com.backend.tomagram.repository.FollowsRepository;
 import com.backend.tomagram.util.JwtUtil;
@@ -20,7 +21,12 @@ public class FollowsService {
             String username = jwtService.extractUsername(jwt);
             User followerUser = UserService.findUser(username);
             User followedUser = UserService.findUser(followedUsername);
+            FollowsId followsId = FollowsId.builder()
+                    .followedUsername(followedUsername)
+                    .followerUsername(username)
+                    .build();
             var follows = Follows.builder()
+                    .id(followsId)
                     .follower(followerUser)
                     .followed(followedUser)
                     .build();
@@ -28,7 +34,7 @@ public class FollowsService {
         } catch (UsernameNotFoundException e){
             throw new UsernameNotFoundException("User does not exists!");
         } catch (Exception e){
-            throw new RuntimeException("Error add new following");
+            throw new RuntimeException("Error add new following", e);
         }
     }
 }
