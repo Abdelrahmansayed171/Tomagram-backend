@@ -1,5 +1,6 @@
 package com.backend.tomagram.service;
 
+import com.backend.tomagram.dto.FollowsResponse;
 import com.backend.tomagram.models.Follows;
 import com.backend.tomagram.models.FollowsId;
 import com.backend.tomagram.models.users.User;
@@ -8,6 +9,10 @@ import com.backend.tomagram.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class FollowsService {
@@ -36,5 +41,22 @@ public class FollowsService {
         } catch (Exception e){
             throw new RuntimeException("Error add new following", e);
         }
+    }
+
+    public List<FollowsResponse> getFollowers(String username) {
+        User followedUser = UserService.findUser(username);
+        if(followedUser == null){
+            throw new UsernameNotFoundException("user not found with username: " + username);
+        }
+        List<Follows> followers = followsRepository.findByFollowed(followedUser);
+
+        return followers.stream()
+                .map(follows ->
+                        new FollowsResponse(follows.getFollower().getUsername(),
+                                follows.getFollowedAt()))
+                .collect(Collectors.toList());
+    }
+
+    public List<FollowsResponse> getFollowings(String username) {
     }
 }
