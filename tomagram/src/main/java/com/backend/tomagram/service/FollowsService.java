@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -45,42 +46,35 @@ public class FollowsService {
     }
 
     public List<FollowsResponse> getFollowers(String username) {
-        List<FollowsResponse> responseList = new ArrayList<>();
-        try {
-            User followedUser = UserService.findUser(username);
-            if (followedUser == null) {
-                throw new UsernameNotFoundException("user not found with username: " + username);
-            }
-            List<Follows> followers = followsRepository.findByFollowed(followedUser);
-
-            responseList = followers.stream()
-                    .map(follows ->
-                            new FollowsResponse(follows.getFollower().getUsername(),
-                                    follows.getFollowedAt()))
-                    .collect(Collectors.toList());
-        } catch (Exception e){
-            System.err.println("An Unexpected error occurred while retrieving followers: " + e.getMessage());
-        }
-        return responseList;
+        return getFollows(username,followsRepository::findByFollowed,1);
     }
 
     public List<FollowsResponse> getFollowings(String username) {
-        List<FollowsResponse> responseList = new ArrayList<>();
-        try {
-            User followerUser = UserService.findUser(username);
-            if (followerUser == null) {
-                throw new UsernameNotFoundException("user not found with username: " + username);
-            }
-            List<Follows> followers = followsRepository.findByFollower(followerUser);
+        return getFollows(username,followsRepository::findByFollower,2);
+    }
 
-            responseList = followers.stream()
-                    .map(follows ->
-                            new FollowsResponse(follows.getFollowed().getUsername(),
-                                    follows.getFollowedAt()))
+    private List<FollowsResponse> getFollows(String username,
+                                             Function<User, List<Follows>> findFollowsMethod,
+                                             Integer followType) {
+        User user = UserService.findUser(username);
+        if(user == null)
+            throw new UsernameNotFoundException("user not found with username: " + username);
+
+        List<FollowsResponse> resList;
+
+        try {
+            List<Follows> followsList = findFollowsMethod.apply(user);
+            resList =  followsList.stream()
+                    .map(follows -> new FollowsResponse(
+                            followType.equals(1) ?
+                                    follows.getFollower().getUsername()
+                                    : follows.getFollowed().getUsername()
+                            , follows.getFollowedAt()))
                     .collect(Collectors.toList());
         } catch (Exception e){
             System.err.println("An Unexpected error occurred while retrieving followers: " + e.getMessage());
+            throw e;
         }
-        return responseList;
+        return resList;
     }
 }
