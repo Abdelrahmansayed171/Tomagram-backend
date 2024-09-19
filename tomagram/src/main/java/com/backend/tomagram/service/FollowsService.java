@@ -75,7 +75,7 @@ public class FollowsService {
 
             responseList = followers.stream()
                     .map(follows ->
-                            new FollowsResponse(follows.getFollower().getUsername(),
+                            new FollowsResponse(follows.getFollowed().getUsername(),
                                     follows.getFollowedAt()))
                     .collect(Collectors.toList());
         } catch (Exception e){
