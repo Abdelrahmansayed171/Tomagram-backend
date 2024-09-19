@@ -87,7 +87,7 @@ public class UserService {
 
     public static User findUser(String username){
         return userRepo.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username or Password is not valid"));
+                .orElseThrow(() -> new UsernameNotFoundException("Username is not valid"));
     }
 
     public void deleteUser(String authHeader) {
