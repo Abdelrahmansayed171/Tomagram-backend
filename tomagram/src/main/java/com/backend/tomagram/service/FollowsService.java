@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,19 +45,42 @@ public class FollowsService {
     }
 
     public List<FollowsResponse> getFollowers(String username) {
-        User followedUser = UserService.findUser(username);
-        if(followedUser == null){
-            throw new UsernameNotFoundException("user not found with username: " + username);
-        }
-        List<Follows> followers = followsRepository.findByFollowed(followedUser);
+        List<FollowsResponse> responseList = new ArrayList<>();
+        try {
+            User followedUser = UserService.findUser(username);
+            if (followedUser == null) {
+                throw new UsernameNotFoundException("user not found with username: " + username);
+            }
+            List<Follows> followers = followsRepository.findByFollowed(followedUser);
 
-        return followers.stream()
-                .map(follows ->
-                        new FollowsResponse(follows.getFollower().getUsername(),
-                                follows.getFollowedAt()))
-                .collect(Collectors.toList());
+            responseList = followers.stream()
+                    .map(follows ->
+                            new FollowsResponse(follows.getFollower().getUsername(),
+                                    follows.getFollowedAt()))
+                    .collect(Collectors.toList());
+        } catch (Exception e){
+            System.err.println("An Unexpected error occurred while retrieving followers: " + e.getMessage());
+        }
+        return responseList;
     }
 
     public List<FollowsResponse> getFollowings(String username) {
+        List<FollowsResponse> responseList = new ArrayList<>();
+        try {
+            User followerUser = UserService.findUser(username);
+            if (followerUser == null) {
+                throw new UsernameNotFoundException("user not found with username: " + username);
+            }
+            List<Follows> followers = followsRepository.findByFollower(followerUser);
+
+            responseList = followers.stream()
+                    .map(follows ->
+                            new FollowsResponse(follows.getFollower().getUsername(),
+                                    follows.getFollowedAt()))
+                    .collect(Collectors.toList());
+        } catch (Exception e){
+            System.err.println("An Unexpected error occurred while retrieving followers: " + e.getMessage());
+        }
+        return responseList;
     }
 }
