@@ -15,7 +15,7 @@ public class ProductDao {
     private final RedisTemplate<String, Object> redisTemplate;
     public static final String HASH_KEY = "product";
     public Product save(Product product){
-        redisTemplate.opsForHash().put(HASH_KEY, product.getId(), product);
+        redisTemplate.opsForHash().put(HASH_KEY, String.valueOf(product.getId()), product);
         return product;
     }
 
@@ -24,10 +24,10 @@ public class ProductDao {
     }
 
     public Object findProductById(int id){
-        return redisTemplate.opsForHash().get(HASH_KEY,id);
+        return redisTemplate.opsForHash().get(HASH_KEY,String.valueOf(id));
     }
     public String deleteProduct(int id){
-        redisTemplate.opsForHash().delete(HASH_KEY,id);
+        redisTemplate.opsForHash().delete(HASH_KEY,String.valueOf(id));
         return "product removed";
     }
 }

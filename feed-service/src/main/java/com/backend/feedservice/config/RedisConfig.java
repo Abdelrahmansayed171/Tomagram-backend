@@ -40,4 +40,22 @@ public class RedisConfig {
         configuration.setPassword(System.getenv("REDIS_PASSWORD"));
         return new LettuceConnectionFactory(configuration);
     }
+//
+//    @Bean
+//    JedisConnectionFactory jedisConnectionFactory() {
+//        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
+//        configuration.setHostName(System.getenv("REDIS_USERNAME"));
+//        configuration.setPort(Integer.parseInt(System.getenv("REDIS_PORT")));
+//        configuration.setUsername(System.getenv("REDIS_USERNAME"));
+//        configuration.setPassword(System.getenv("REDIS_PASSWORD"));
+//        return new JedisConnectionFactory(configuration);
+//    }
+//
+//    @Bean
+//    public RedisTemplate<String, Object> redisTemplate() {
+//        RedisTemplate<String, Object> template = new RedisTemplate<>();
+//        template.setConnectionFactory(jedisConnectionFactory());
+//        return template;
+//    }
+
 }

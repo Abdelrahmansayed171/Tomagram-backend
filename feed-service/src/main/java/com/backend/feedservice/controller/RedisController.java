@@ -14,10 +14,15 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @RequestMapping("/api/redis")
 public class RedisController {
-    private ProductDao dao;
+    private final ProductDao dao;
 
     @PostMapping
     public Product save(@RequestBody Product product){
+        System.out.println(product.getId());
+        System.out.println(product.getName());
+        System.out.println(product.getQty());
+        System.out.println(product.getPrice());
+
         return dao.save(product);
     }
     @GetMapping
