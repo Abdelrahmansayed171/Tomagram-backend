@@ -21,7 +21,7 @@ public class RedisController {
         return dao.save(product);
     }
     @GetMapping
-    public List<Product> getAllProducts(){
+    public List<Object> getAllProducts(){
         return dao.findAll();
     }
     @GetMapping("/{id}")
