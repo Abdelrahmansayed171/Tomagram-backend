@@ -28,8 +28,7 @@ public class PostService {
     */
     public void storePost(String postId, String content, String createdAt, String location, String username){
         String hashKey = "posts:" + postId;
-        LocalDateTime dateTime = TimeUtil.fromString(createdAt);
-        long createdAtUnixTimestamp = TimeUtil.toUnixTimestamp(dateTime);
+        long createdAtUnixTimestamp = TimeUtil.stringToUnixTimestamp(createdAt);
 
         Map<String, Object> postFields = Map.of(
                 "content", content,
@@ -41,6 +40,30 @@ public class PostService {
         redisTemplate.opsForHash().putAll(hashKey, postFields);
         // set expiration time
         redisTemplate.expire(hashKey, Duration.ofSeconds(EXPIRATION_TIME));
+    }
+
+    /*
+     * Add post ID to user's sorted set (feed)
+     * @param username
+     * @param postId
+     * @param timestamp which considered to be sorted set score
+     */
+    public void addPostToUserFeed(String username, String postId, String createdAt){
+        String sortedSetKey = "user:" + username;
+        long createdAtUnixTimestamp = TimeUtil.stringToUnixTimestamp(createdAt);
+
+        redisTemplate.opsForZSet().add(sortedSetKey, postId, createdAtUnixTimestamp);
+    }
+
+    /*
+     * add postId to user's seen posts
+     * @param username
+     * @param postId
+     */
+    public void markPostAsSeen(String username, String postId){
+        String setKey = "user:seen:" + username;
+
+        redisTemplate.opsForSet().add(setKey, postId);
     }
 
 

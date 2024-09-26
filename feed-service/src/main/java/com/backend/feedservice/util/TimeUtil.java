@@ -39,4 +39,14 @@ public class TimeUtil {
         return LocalDateTime.parse(dateTime, formatter);
     }
 
+    /*
+     * Converts String datatype into long unix timestamp
+     *
+     * @param String datetime in LocalDateTime  format to be converted
+     * @return long createdAt
+     */
+    public static long stringToUnixTimestamp(String createdAt){
+        LocalDateTime dateTime = TimeUtil.fromString(createdAt);
+        return TimeUtil.toUnixTimestamp(dateTime);
+    }
 }
