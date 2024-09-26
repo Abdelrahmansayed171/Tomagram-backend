@@ -8,6 +8,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
@@ -18,18 +19,22 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
 
 //    Access Redis from our Spring application
-    @Primary
     @Bean
     public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
         template.setKeySerializer(new StringRedisSerializer());  // keys will be stored as simple strings in Redis.
-        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+        template.setValueSerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer()); // Hash Keys are also stored as simple strings in Redis.
         template.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class)); // hash values will be serialized using Java's default serialization mechanism, allowing you to store complex objects in hashes.
         template.setEnableTransactionSupport(true); // multiple Redis commands can be grouped together into a transaction.
         template.afterPropertiesSet();  // This method performs any necessary initialization or validation tasks.
         return template;
+    }
+
+    @Bean
+    public StringRedisTemplate stringRedisTemplate(LettuceConnectionFactory connectionFactory){
+        return new StringRedisTemplate(connectionFactory);
     }
 
     // establish Redis server Connection
