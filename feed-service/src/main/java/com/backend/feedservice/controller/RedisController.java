@@ -32,6 +32,9 @@ public class RedisController {
         postService.storePost(
                 req.getId(), req.getContent(), req.getCreatedAt(),
                 req.getLocation(), req.getUsername());
+        postService.addPostToUserFeed(req.getUsername(), req.getId(), req.getCreatedAt());
+        postService.markPostAsSeen("orcaABS", "3");
+        postService.markPostAsSeen("orcaABS", "2");
     }
     @GetMapping
     public List<Object> getAllProducts(){
