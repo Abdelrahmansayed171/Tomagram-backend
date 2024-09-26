@@ -34,25 +34,28 @@ public class FeedService {
         Set<String> seenPostIds = stringRedisTemplate.opsForSet().members(userSeenSetKey);
 
         // Step 3: (postIds - seenPostIds) - we're going to get difference between 2 sets
+        List<String> filteredPostIds = new ArrayList<>(postIds);
         if(postIds != null && !postIds.isEmpty()
                 && seenPostIds != null && !seenPostIds.isEmpty()){
-            postIds = postIds.stream()
+            filteredPostIds = filteredPostIds.stream()
                     .filter( postId -> !seenPostIds.contains(postId))
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toList());
         }
 
-        if (postIds == null) {
+        if (filteredPostIds == null) {
             return Collections.emptyList(); // No unseen posts to display
         }
 
+        // reverse List to obtain more recent posts at the top
+        Collections.reverse(filteredPostIds);
+
         // Step 4: retrieve post hashes which ids are included in postIds set
         List<Map<Object, Object>> userPosts = new ArrayList<>();
-        for(String postId : postIds){
+        for(String postId : filteredPostIds){
             String postKey = "posts:"+postId;
             Map<Object,Object> post = redisTemplate.opsForHash().entries(postKey);
-            if(!post.isEmpty()){
-                userPosts.add(post);
-            }
+            post.put("id", postId);
+            userPosts.add(post);
         }
 
         return userPosts;
