@@ -2,6 +2,7 @@ package com.backend.feedservice.service;
 
 import com.backend.feedservice.util.TimeUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +26,10 @@ public class PostService {
     * @param location the location where post created
     * @param username the creator of the post
     */
-    public void storePost(String postId, String content, LocalDateTime createdAt, String location, String username){
+    public void storePost(String postId, String content, String createdAt, String location, String username){
         String hashKey = "posts:" + postId;
-        long createdAtUnixTimestamp = TimeUtil.toUnixTimestamp(createdAt);
+        LocalDateTime dateTime = TimeUtil.fromString(createdAt);
+        long createdAtUnixTimestamp = TimeUtil.toUnixTimestamp(dateTime);
 
         Map<String, Object> postFields = Map.of(
                 "content", content,

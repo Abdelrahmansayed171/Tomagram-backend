@@ -1,5 +1,6 @@
 package com.backend.feedservice.controller;
 
+import com.backend.feedservice.dto.PostRequest;
 import com.backend.feedservice.entity.Product;
 import com.backend.feedservice.repository.ProductDao;
 import com.backend.feedservice.service.PostService;
@@ -27,13 +28,10 @@ public class RedisController {
 //
 //        return dao.save(product);
 //    }
-    public Product save(@RequestBody Product product){
-        System.out.println(product.getId());
-        System.out.println(product.getName());
-        System.out.println(product.getQty());
-        System.out.println(product.getPrice());
-
-        return dao.save(product);
+    public void save(@RequestBody PostRequest req){
+        postService.storePost(
+                req.getId(), req.getContent(), req.getCreatedAt(),
+                req.getLocation(), req.getUsername());
     }
     @GetMapping
     public List<Object> getAllProducts(){

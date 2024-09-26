@@ -5,6 +5,7 @@ import org.springframework.cglib.core.Local;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 public class TimeUtil {
     /*
@@ -23,9 +24,19 @@ public class TimeUtil {
      * @param datetime in seconds to be converted
      * @return LocalDateTime Timestamp (seconds since epoch)
      */
-
     public static LocalDateTime fromLocalDateTime(long datetime){
         return LocalDateTime.ofEpochSecond(datetime,0,ZoneOffset.UTC);
+    }
+
+    /*
+     * Converts String datatype into LocalDateTime data type
+     *
+     * @param datetime in String LocalDateTime to be converted
+     * @return LocalDateTime Timestamp
+     */
+    public static LocalDateTime fromString(String dateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+        return LocalDateTime.parse(dateTime, formatter);
     }
 
 }
