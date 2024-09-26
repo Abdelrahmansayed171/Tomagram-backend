@@ -33,14 +33,18 @@ public class FeedService {
         // Step 2: Retrieve All Seen post IDs from user's seen set
         Set<String> seenPostIds = stringRedisTemplate.opsForSet().members(userSeenSetKey);
 
+        // optimization steps
+        Set<String> unseenPostIds = stringRedisTemplate.opsForZSet().difference(userSortedSet, userSeenSetKey);
+
+
         // Step 3: (postIds - seenPostIds) - we're going to get difference between 2 sets
 
-        assert postIds != null;
-        List<String> filteredPostIds = new ArrayList<>(postIds);
-        assert seenPostIds != null;
-        filteredPostIds = filteredPostIds.stream()
-                .filter( postId -> !seenPostIds.contains(postId))
-                .collect(Collectors.toList());
+//        assert postIds != null;
+        List<String> filteredPostIds = new ArrayList<>(unseenPostIds);
+//        assert seenPostIds != null;
+//        filteredPostIds = filteredPostIds.stream()
+//                .filter( postId -> !seenPostIds.contains(postId))
+//                .collect(Collectors.toList());
 
         // reverse List to obtain more recent posts at the top
         Collections.reverse(filteredPostIds);
