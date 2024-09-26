@@ -2,6 +2,7 @@ package com.backend.feedservice.controller;
 
 import com.backend.feedservice.entity.Product;
 import com.backend.feedservice.repository.ProductDao;
+import com.backend.feedservice.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,8 +16,17 @@ import java.util.Objects;
 @RequestMapping("/api/redis")
 public class RedisController {
     private final ProductDao dao;
+    private final PostService postService;
 
     @PostMapping
+//    public Product save(@RequestBody Product product){
+//        System.out.println(product.getId());
+//        System.out.println(product.getName());
+//        System.out.println(product.getQty());
+//        System.out.println(product.getPrice());
+//
+//        return dao.save(product);
+//    }
     public Product save(@RequestBody Product product){
         System.out.println(product.getId());
         System.out.println(product.getName());
