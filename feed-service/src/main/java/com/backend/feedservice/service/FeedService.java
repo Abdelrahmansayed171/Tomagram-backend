@@ -3,6 +3,7 @@ package com.backend.feedservice.service;
 import com.backend.feedservice.dto.PostRequest;
 import com.netflix.discovery.provider.Serializer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -27,35 +28,35 @@ public class FeedService {
         String userSortedSet = "user:" +username;
         String userSeenSetKey = "user:seen:" + username;
 
-        // Step 1: Retrieve all post IDs from user's feed (Sorted Set)
-        Set<String> postIds = stringRedisTemplate.opsForZSet().range(userSortedSet,0,-1);
-
-        // Step 2: Retrieve All Seen post IDs from user's seen set
-        Set<String> seenPostIds = stringRedisTemplate.opsForSet().members(userSeenSetKey);
-
-        // optimization steps
+        // Step 1: (postIds - seenPostIds) - we're going to get difference between 2 sets
         Set<String> unseenPostIds = stringRedisTemplate.opsForZSet().difference(userSortedSet, userSeenSetKey);
+        assert unseenPostIds != null;
 
-
-        // Step 3: (postIds - seenPostIds) - we're going to get difference between 2 sets
-
-//        assert postIds != null;
+        // store postIds in a list to maintain its order through further operations
         List<String> filteredPostIds = new ArrayList<>(unseenPostIds);
-//        assert seenPostIds != null;
-//        filteredPostIds = filteredPostIds.stream()
-//                .filter( postId -> !seenPostIds.contains(postId))
-//                .collect(Collectors.toList());
 
-        // reverse List to obtain more recent posts at the top
-        Collections.reverse(filteredPostIds);
 
-        // Step 4: retrieve post hashes which ids are included in postIds set
+        // Step 2: Open only one Redis Database Connection, retrieving all posts
+        List<String> postHashKeys = filteredPostIds.stream()
+                .map(postId -> "posts:"+postId)
+                .toList();
+        List<Object> redisPipeline = redisTemplate.executePipelined(
+                (RedisCallback<Object>) connection -> {
+                    for (String postHashKey : postHashKeys){
+                        connection.hashCommands().hGetAll(postHashKey.getBytes());
+                    }
+                    return null;
+                });
+
+        // Step 3: Type-cast pipeline result and add postId to each post map
         List<Map<Object, Object>> userPosts = new ArrayList<>();
-        for(String postId : filteredPostIds){
-            String postKey = "posts:"+postId;
-            Map<Object,Object> post = redisTemplate.opsForHash().entries(postKey);
-            post.put("id", postId);
-            userPosts.add(post);
+        for (int i = redisPipeline.size()-1; i >= 0 ; i--) {
+            @SuppressWarnings("unchecked")
+            Map<Object, Object> post = (Map<Object, Object>) redisPipeline.get(i);
+            if (post != null) {
+                post.put("id", filteredPostIds.get(i));
+                userPosts.add(post);
+            }
         }
 
         return userPosts;
