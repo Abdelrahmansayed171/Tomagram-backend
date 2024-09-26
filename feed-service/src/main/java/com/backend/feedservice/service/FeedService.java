@@ -34,17 +34,13 @@ public class FeedService {
         Set<String> seenPostIds = stringRedisTemplate.opsForSet().members(userSeenSetKey);
 
         // Step 3: (postIds - seenPostIds) - we're going to get difference between 2 sets
-        List<String> filteredPostIds = new ArrayList<>(postIds);
-        if(postIds != null && !postIds.isEmpty()
-                && seenPostIds != null && !seenPostIds.isEmpty()){
-            filteredPostIds = filteredPostIds.stream()
-                    .filter( postId -> !seenPostIds.contains(postId))
-                    .collect(Collectors.toList());
-        }
 
-        if (filteredPostIds == null) {
-            return Collections.emptyList(); // No unseen posts to display
-        }
+        assert postIds != null;
+        List<String> filteredPostIds = new ArrayList<>(postIds);
+        assert seenPostIds != null;
+        filteredPostIds = filteredPostIds.stream()
+                .filter( postId -> !seenPostIds.contains(postId))
+                .collect(Collectors.toList());
 
         // reverse List to obtain more recent posts at the top
         Collections.reverse(filteredPostIds);
