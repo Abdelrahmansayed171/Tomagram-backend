@@ -20,14 +20,6 @@ public class RedisController {
     private final PostService postService;
 
     @PostMapping
-//    public Product save(@RequestBody Product product){
-//        System.out.println(product.getId());
-//        System.out.println(product.getName());
-//        System.out.println(product.getQty());
-//        System.out.println(product.getPrice());
-//
-//        return dao.save(product);
-//    }
     public void save(@RequestBody PostRequest req){
         postService.storePost(
                 req.getId(), req.getContent(), req.getCreatedAt(),
