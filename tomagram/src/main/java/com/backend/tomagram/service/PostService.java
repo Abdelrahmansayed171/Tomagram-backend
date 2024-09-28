@@ -47,7 +47,7 @@ public class PostService {
         UploadRequest uploadRequest = new UploadRequest(postRequest, userFollowers);
 
         // call FEED-SERVICE method to make fanout functionality using redis
-        feedInterface.postUpload(uploadRequest);
+        feedInterface.addFeed(uploadRequest);
     }
 
     public void upload(String authHeader, PostRequest postRequest) {

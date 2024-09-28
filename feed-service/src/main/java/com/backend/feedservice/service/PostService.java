@@ -1,5 +1,6 @@
 package com.backend.feedservice.service;
 
+import com.backend.feedservice.dto.PostRequest;
 import com.backend.feedservice.util.TimeUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
@@ -35,6 +36,22 @@ public class PostService {
                 "createdAt", createdAtUnixTimestamp,
                 "location", location,
                 "username", username
+        );
+
+        redisTemplate.opsForHash().putAll(hashKey, postFields);
+        // set expiration time
+        redisTemplate.expire(hashKey, Duration.ofSeconds(EXPIRATION_TIME));
+    }
+
+    public void storePost(PostRequest postRequest){
+        String hashKey = "posts:" + postRequest.getId();
+        long createdAtUnixTimestamp = TimeUtil.stringToUnixTimestamp(postRequest.getCreatedAt());
+
+        Map<String, Object> postFields = Map.of(
+                "content", postRequest.getContent(),
+                "createdAt", createdAtUnixTimestamp,
+                "location", postRequest.getLocation(),
+                "username", postRequest.getUsername()
         );
 
         redisTemplate.opsForHash().putAll(hashKey, postFields);

@@ -1,13 +1,11 @@
 package com.backend.feedservice.controller;
 
+import com.backend.feedservice.dto.UploadRequest;
 import com.backend.feedservice.service.FeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -28,4 +26,11 @@ public class FeedController {
         }
         return ResponseEntity.ok(feed);
     }
+
+    @PostMapping()
+    public void addFeed(@RequestBody UploadRequest request){
+        feedService.fanout(request);
+    }
+
+
 }

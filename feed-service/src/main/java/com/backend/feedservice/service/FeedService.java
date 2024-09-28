@@ -1,6 +1,8 @@
 package com.backend.feedservice.service;
 
 import com.backend.feedservice.dto.PostRequest;
+import com.backend.feedservice.dto.UploadRequest;
+import com.backend.feedservice.dto.UserFollowers;
 import com.netflix.discovery.provider.Serializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisCallback;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class FeedService {
     private final StringRedisTemplate stringRedisTemplate;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final PostService postService;
 
     /*
      * Computes a user's feed by retrieving all posts in the user's sorted set,
@@ -61,4 +64,20 @@ public class FeedService {
 
         return userPosts;
     }
+
+    /*
+     * Add new post Hash to redis cache
+     * Add post id to followers sorted set
+     *
+     * @param UploadRequest contains post details, follower usernames to update their feeds
+     */
+    public void fanout(UploadRequest request){
+        PostRequest postRequest = request.getPostRequest();
+        List<String> followers = request.getUserFollowers().getFollowers();
+        postService.storePost(postRequest);
+        for(String follower : followers){
+            postService.addPostToUserFeed(follower, postRequest.getId(), postRequest.getCreatedAt());
+        }
+    }
+
 }
