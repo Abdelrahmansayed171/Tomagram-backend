@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/fanout")
 public class FanoutController {
     @PostMapping("/upload")
-    public ResponseEntity<Object> postUpload(@RequestBody UploadRequest request){
-        return ResponseEntity.ok("com estas");
+    public String postUpload(){
+        System.out.println("cómo estás, amigo");
+        return "cómo estás, amigo";
     }
 }

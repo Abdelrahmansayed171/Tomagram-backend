@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient("FEED-SERVICE")
 public interface FeedServiceInterface {
-    @PostMapping("/upload")
-    public ResponseEntity<Object> postUpload(@RequestBody UploadRequest request);
+    @PostMapping("/api/fanout/upload")
+    public ResponseEntity<Object> postUpload();
 }

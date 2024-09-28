@@ -3,8 +3,10 @@ package com.backend.tomagram.controller;
 import com.backend.tomagram.dto.PostRequest;
 import com.backend.tomagram.dto.PostUpdateRequest;
 import com.backend.tomagram.dto.UserPostsResponse;
+import com.backend.tomagram.feign.FeedServiceInterface;
 import com.backend.tomagram.models.posts.Post;
 import com.backend.tomagram.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +15,12 @@ import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/post")
 public class PostController {
 
     private final PostService postService;
-
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
+    private final FeedServiceInterface feedInterface;
 
     @PostMapping
     public ResponseEntity<String> addPost(@RequestHeader("Authorization") String authHeader, @RequestBody PostRequest postRequest){
@@ -30,6 +30,11 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
         return ResponseEntity.ok("Post added Successfully");
+    }
+
+    @GetMapping("/test")
+    public void testServiceConnection(){
+        System.out.println(feedInterface.postUpload());
     }
 
     @PutMapping

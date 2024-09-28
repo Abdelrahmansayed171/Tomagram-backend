@@ -3,28 +3,27 @@ package com.backend.tomagram.service;
 import com.backend.tomagram.dto.PostRequest;
 import com.backend.tomagram.dto.PostUpdateRequest;
 import com.backend.tomagram.dto.UserPostsResponse;
+import com.backend.tomagram.feign.FeedServiceInterface;
 import com.backend.tomagram.models.posts.Post;
 import com.backend.tomagram.models.users.User;
 import com.backend.tomagram.repository.PostRepository;
 import com.backend.tomagram.util.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class PostService {
     private final JwtUtil jwtUtil;
     private final JwtService jwtService;
     private final PostRepository postRepository;
+    private final FeedServiceInterface feedInterface;
 
-    public PostService(JwtUtil jwtUtil, JwtService jwtService, PostRepository postRepository) {
-        this.jwtUtil = jwtUtil;
-        this.jwtService = jwtService;
-        this.postRepository = postRepository;
-    }
     public void upload(String authHeader, PostRequest postRequest) {
         final String jwt = jwtUtil.getJwt(authHeader);
         final String username = jwtService.extractUsername(jwt);
