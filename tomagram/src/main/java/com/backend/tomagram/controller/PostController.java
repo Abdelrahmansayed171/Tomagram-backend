@@ -33,8 +33,9 @@ public class PostController {
     }
 
     @GetMapping("/test")
-    public void testServiceConnection(){
+    public String testServiceConnection(){
         System.out.println(feedInterface.postUpload());
+        return feedInterface.postUpload();
     }
 
     @PutMapping
