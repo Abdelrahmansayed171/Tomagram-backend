@@ -2,10 +2,13 @@ package com.backend.tomagram.service;
 
 import com.backend.tomagram.dto.PostRequest;
 import com.backend.tomagram.dto.PostUpdateRequest;
+import com.backend.tomagram.dto.UserFollowers;
 import com.backend.tomagram.dto.UserPostsResponse;
 import com.backend.tomagram.feign.FeedServiceInterface;
+import com.backend.tomagram.models.Follows;
 import com.backend.tomagram.models.posts.Post;
 import com.backend.tomagram.models.users.User;
+import com.backend.tomagram.repository.FollowsRepository;
 import com.backend.tomagram.repository.PostRepository;
 import com.backend.tomagram.util.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -23,6 +27,25 @@ public class PostService {
     private final JwtService jwtService;
     private final PostRepository postRepository;
     private final FeedServiceInterface feedInterface;
+    private final FollowsRepository followsRepository;
+
+    private void fanout(User user, Post post){
+        PostRequest postRequest = PostRequest.builder()
+                .id(String.valueOf(post.getId()))
+                .username(user.getUsername())
+                .content(post.getContent())
+                .location(post.getLocation())
+                .createdAt(String.valueOf(post.getCreatedAt()))
+                .build();
+
+        // get user followers
+        List<Follows> followersList =  followsRepository.findByFollowed(user);
+        UserFollowers userFollowers = new UserFollowers();
+        List<String> followerUsernames = followersList.stream()
+                .map(follows -> follows.getFollower().getUsername())
+                .toList();
+
+    }
 
     public void upload(String authHeader, PostRequest postRequest) {
         final String jwt = jwtUtil.getJwt(authHeader);
@@ -38,6 +61,7 @@ public class PostService {
         } catch (Exception e){
             throw new RuntimeException("Error Uploading post");
         }
+        fanout(user, post);
     }
 
 

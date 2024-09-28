@@ -20,7 +20,6 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-    private final FeedServiceInterface feedInterface;
 
     @PostMapping
     public ResponseEntity<String> addPost(@RequestHeader("Authorization") String authHeader, @RequestBody PostRequest postRequest){
@@ -30,12 +29,6 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
         return ResponseEntity.ok("Post added Successfully");
-    }
-
-    @GetMapping("/test")
-    public String testServiceConnection(){
-        System.out.println(feedInterface.postUpload());
-        return feedInterface.postUpload();
     }
 
     @PutMapping

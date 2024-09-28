@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/fanout")
 public class FanoutController {
-    @GetMapping("/upload")
-    public String postUpload(){
+    @PostMapping("/upload")
+    public void postUpload(UploadRequest request){
         System.out.println("cómo estás, amigo");
-        return "cómo estás, amigo";
     }
+
 }
