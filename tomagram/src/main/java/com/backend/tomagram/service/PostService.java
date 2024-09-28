@@ -1,9 +1,6 @@
 package com.backend.tomagram.service;
 
-import com.backend.tomagram.dto.PostRequest;
-import com.backend.tomagram.dto.PostUpdateRequest;
-import com.backend.tomagram.dto.UserFollowers;
-import com.backend.tomagram.dto.UserPostsResponse;
+import com.backend.tomagram.dto.*;
 import com.backend.tomagram.feign.FeedServiceInterface;
 import com.backend.tomagram.models.Follows;
 import com.backend.tomagram.models.posts.Post;
@@ -30,6 +27,7 @@ public class PostService {
     private final FollowsRepository followsRepository;
 
     private void fanout(User user, Post post){
+        // create new PostRequest with complete fields (created from db object)
         PostRequest postRequest = PostRequest.builder()
                 .id(String.valueOf(post.getId()))
                 .username(user.getUsername())
@@ -41,10 +39,15 @@ public class PostService {
         // get user followers
         List<Follows> followersList =  followsRepository.findByFollowed(user);
         UserFollowers userFollowers = new UserFollowers();
-        List<String> followerUsernames = followersList.stream()
+        userFollowers.setFollowers(
+                followersList.stream()
                 .map(follows -> follows.getFollower().getUsername())
-                .toList();
+                .toList()
+        );
+        UploadRequest uploadRequest = new UploadRequest(postRequest, userFollowers);
 
+        // call FEED-SERVICE method to make fanout functionality using redis
+        feedInterface.postUpload(uploadRequest);
     }
 
     public void upload(String authHeader, PostRequest postRequest) {
