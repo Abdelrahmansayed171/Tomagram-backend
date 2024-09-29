@@ -8,6 +8,7 @@ import com.backend.tomagram.models.users.User;
 import com.backend.tomagram.repository.FollowsRepository;
 import com.backend.tomagram.repository.PostRepository;
 import com.backend.tomagram.util.JwtUtil;
+import com.backend.tomagram.util.TimeUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class PostService {
                 .username(user.getUsername())
                 .content(post.getContent())
                 .location(post.getLocation())
-                .createdAt(String.valueOf(post.getCreatedAt()))
+                .createdAt(TimeUtil.toCustomString(post.getCreatedAt()))
                 .build();
 
         // get user followers

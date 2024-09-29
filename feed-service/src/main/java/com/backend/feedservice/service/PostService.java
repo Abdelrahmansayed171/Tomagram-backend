@@ -14,7 +14,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class PostService {
-    private static final long EXPIRATION_TIME = 30 * 24 * 60 * 60; // 30 days in seconds
+    private static final long EXPIRATION_TIME = 10 * 60; // 10 mins
 
     private final RedisTemplate<String, Object> redisTemplate;
 
