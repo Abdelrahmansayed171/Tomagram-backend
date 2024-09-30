@@ -92,6 +92,14 @@ public class PostService {
         } catch (Exception e){
             throw new RuntimeException("Error Updating post: " + e.getMessage());
         }
+        PostRequest postRequest = PostRequest.builder()
+                .id(String.valueOf(post.getId()))
+                .location(post.getLocation())
+                .content(post.getContent())
+                .username(username)
+                .createdAt(TimeUtil.toCustomString(post.getCreatedAt()))
+                .build();
+        feedInterface.updatePost(postRequest);
     }
 
     public void deletePost(Long id){

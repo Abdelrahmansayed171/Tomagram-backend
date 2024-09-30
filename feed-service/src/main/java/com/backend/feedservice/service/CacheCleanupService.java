@@ -18,6 +18,9 @@ public class CacheCleanupService {
      // runs every 8 minutes
     @Scheduled(cron = "0 0/8 * * * *")
     public void cleanExpiredPosts(){
+        System.out.println("########## Scheduled task running!!!..... ##############");
+        System.out.println("########## Scheduled task running!!!..... ##############");
+        System.out.println("########## Scheduled task running!!!..... ##############");
         // Step 1: get all keys for those redis sets
         Set<String> userSortedSetKeys = stringRedisTemplate.keys("user:*");
         Set<String> userSeenSetKeys = stringRedisTemplate.keys("user:seen:*");

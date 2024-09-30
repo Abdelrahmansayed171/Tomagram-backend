@@ -2,8 +2,6 @@ package com.backend.feedservice.service;
 
 import com.backend.feedservice.dto.PostRequest;
 import com.backend.feedservice.dto.UploadRequest;
-import com.backend.feedservice.dto.UserFollowers;
-import com.netflix.discovery.provider.Serializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -11,7 +9,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
