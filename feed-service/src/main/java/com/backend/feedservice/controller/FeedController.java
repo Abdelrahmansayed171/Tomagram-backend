@@ -1,6 +1,7 @@
 package com.backend.feedservice.controller;
 
 import com.backend.feedservice.dto.PostRequest;
+import com.backend.feedservice.dto.SeenPostRequest;
 import com.backend.feedservice.dto.UploadRequest;
 import com.backend.feedservice.service.FeedService;
 import com.backend.feedservice.service.PostService;
@@ -46,5 +47,14 @@ public class FeedController {
     @PutMapping
     public void updatePost(@RequestBody PostRequest request){
         postService.storePost(request);
+    }
+
+    /*
+     * mark posts had been seen by user, as it would be updated in redis cache
+     * @param SeenPostRequest contains (username, list of postIds)
+     */
+    @PostMapping("/seen")
+    public void addPostToSeen(@RequestBody SeenPostRequest request){
+        feedService.markPostsAsSeen(request);
     }
 }

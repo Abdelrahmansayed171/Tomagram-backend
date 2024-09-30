@@ -1,6 +1,7 @@
 package com.backend.feedservice.service;
 
 import com.backend.feedservice.dto.PostRequest;
+import com.backend.feedservice.dto.SeenPostRequest;
 import com.backend.feedservice.dto.UploadRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisCallback;
@@ -77,4 +78,9 @@ public class FeedService {
         }
     }
 
+    public void markPostsAsSeen(SeenPostRequest request) {
+        for(String post_id : request.getSeen_postIds()){
+            postService.markPostAsSeen(request.getUsername(), post_id);
+        }
+    }
 }
