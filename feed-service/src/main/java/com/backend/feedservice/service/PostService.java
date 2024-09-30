@@ -82,6 +82,4 @@ public class PostService {
 
         redisTemplate.opsForSet().add(setKey, postId);
     }
-
-
 }
