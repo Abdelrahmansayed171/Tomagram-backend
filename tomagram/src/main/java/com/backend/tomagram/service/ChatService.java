@@ -14,8 +14,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class ChatService {
-    private ConversationRepository conversationRepo;
-    private MessageRepository messageRepo;
+    private final ConversationRepository conversationRepo;
+    private final MessageRepository messageRepo;
 
     public Conversation startPrivateConversation(String user1, String user2){
         Optional<Conversation> conversation = conversationRepo.

@@ -29,7 +29,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // Check Notion my CSRF Documentation
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/api/auth/**").permitAll() // make login, register routes as public routes
+                                .requestMatchers("/api/auth/**").permitAll()// make login, register routes as public routes
+                                .requestMatchers("/ws/**").permitAll()
                                 .anyRequest().authenticated()) // another route needs to be authenticated with a valid JWT
                 .sessionManagement( session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // our application implements stateless JWT authentication
