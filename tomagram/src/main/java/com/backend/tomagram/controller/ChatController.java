@@ -36,4 +36,10 @@ public class ChatController {
         return ResponseEntity.ok(chatService.getMessages(conversationId,after));
     }
 
+    @PutMapping("/seen/{conversationId}/{username}")
+    public ResponseEntity<List<Message>> markConversationAsRead(@PathVariable String conversationId,
+                                                                @PathVariable String username){
+        return ResponseEntity.ok(chatService.markMessageAsRead(conversationId, username));
+    }
+
 }

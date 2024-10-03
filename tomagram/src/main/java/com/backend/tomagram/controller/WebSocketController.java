@@ -18,7 +18,5 @@ public class WebSocketController {
     public Message sendMessage(@DestinationVariable String conversationId, Message message) throws Exception{
         return chatService.sendMessage(conversationId, message.getSender(), message.getContent());
     }
-//
-//    @MessageMapping("/conversation/seen") // when user read conversation messages
-//    public void readConversation
+
 }

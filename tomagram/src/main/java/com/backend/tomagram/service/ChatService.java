@@ -53,7 +53,7 @@ public class ChatService {
         }
         return messageRepo.findByConversationIdAndSentAtAfter(conversationId, after);
     }
-    public void markMessageAsRead(String conversationId, String username){
+    public List<Message> markMessageAsRead(String conversationId, String username){
         List<Message> messages = messageRepo.findByConversationId(conversationId);
         messages.forEach(
                 message -> {
@@ -63,6 +63,7 @@ public class ChatService {
                     }
                 }
         );
+        return messages;
     }
 
 }
