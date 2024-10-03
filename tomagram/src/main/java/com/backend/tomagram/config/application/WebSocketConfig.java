@@ -25,6 +25,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         //  Adds a WebSocket endpoint at the path /chat.
         //  .withSockJS() method enables SockJS fallback mechanisms for browsers that don't support WebSocket directly.
-        registry.addEndpoint("/chat").withSockJS();
+        registry.addEndpoint("/chat");
     }
 }
