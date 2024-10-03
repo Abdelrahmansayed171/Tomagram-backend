@@ -13,7 +13,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
 //      Enables a simple message broker that supports broadcasting messages to a specific topic.
 //      This allows multiple clients to subscribe to a topic and receive messages sent to that topic.
-        registry.enableSimpleBroker("/topic");
+        registry.enableSimpleBroker("/topic"); // CHANNEL
 
 //      Sets the prefix for message destinations.
 //      This prefix will be prepended to message destinations specified in the client's WebSocket messages.

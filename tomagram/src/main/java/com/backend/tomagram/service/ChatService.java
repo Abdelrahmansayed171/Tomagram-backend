@@ -53,5 +53,16 @@ public class ChatService {
         }
         return messageRepo.findByConversationIdAndSentAtAfter(conversationId, after);
     }
+    public void markMessageAsRead(String conversationId, String username){
+        List<Message> messages = messageRepo.findByConversationId(conversationId);
+        messages.forEach(
+                message -> {
+                    if(!message.getReadBy().contains(username)){
+                        message.getReadBy().add(username);
+                        messageRepo.save(message);
+                    }
+                }
+        );
+    }
 
 }
