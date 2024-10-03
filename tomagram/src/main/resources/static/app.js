@@ -6,6 +6,7 @@ stompClient.onConnect = (frame) => {
     setConnected(true);
     console.log('Connected: ' + frame);
     stompClient.subscribe('/topic/66fe954cbb35835311fc6f6d', (message) => {
+        console.log(message);
         showMessage(JSON.parse(message.body).content);
     });
 };
