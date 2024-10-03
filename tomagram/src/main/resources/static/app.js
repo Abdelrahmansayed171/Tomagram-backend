@@ -5,9 +5,8 @@ const stompClient = new StompJs.Client({
 stompClient.onConnect = (frame) => {
     setConnected(true);
     console.log('Connected: ' + frame);
-
-    stompClient.subscribe('/topic/66fe954cbb35835311fc6f6d', (greeting) => {
-        showGreeting(JSON.parse(greeting.body).content);
+    stompClient.subscribe('/topic/66fe954cbb35835311fc6f6d', (message) => {
+        showMessage(JSON.parse(message.body).content);
     });
 };
 
@@ -42,20 +41,28 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendName() {
+// Send a message to the WebSocket server
+function sendMessage() {
+    const conversationId = $("#conversationId").val();  // Get the conversation ID dynamically
+    const sender = $("#sender").val();  // Get the sender's name or ID
+    const content = $("#messageContent").val();  // Get the message content
+
+    // Publish the message to the server's /app/chat/{conversationId} endpoint
     stompClient.publish({
-        destination: "/app/chat/66fe954cbb35835311fc6f6d",
-        body: JSON.stringify({'name': $("#name").val()})
+        destination: `/app/chat/${conversationId}`,
+        body: JSON.stringify({ 'sender': sender, 'content': content }),
     });
 }
 
-function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+// Display incoming messages
+function showMessage(message) {
+    console.log(message);
+    $("#messages").append("<tr><td>" + message + "</td></tr>");
 }
 
 $(function () {
     $("form").on('submit', (e) => e.preventDefault());
     $( "#connect" ).click(() => connect());
     $( "#disconnect" ).click(() => disconnect());
-    $( "#send" ).click(() => sendName());
+    $( "#send" ).click(() => sendMessage());
 });
