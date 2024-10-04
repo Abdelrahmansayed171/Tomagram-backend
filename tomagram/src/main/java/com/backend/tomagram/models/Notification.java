@@ -26,7 +26,7 @@ public class Notification {
 
     private String message;
 
-    private boolean isRead = false;
+    private boolean read = false;
 
     private LocalDateTime timestamp;
 
