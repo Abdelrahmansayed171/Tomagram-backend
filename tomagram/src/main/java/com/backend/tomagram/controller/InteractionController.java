@@ -22,12 +22,12 @@ public class InteractionController {
 
     @PostMapping("/likes")
     public Like addLike(@RequestHeader("Authorization") String authHeader,@RequestBody InteractionRequest req) {
-        return interactionService.addLike(postId, userId);
+        return interactionService.addLike(authHeader, req);
     }
 
     @DeleteMapping("/likes")
     public void removeLike(@RequestHeader("Authorization") String authHeader,@RequestBody InteractionRequest req) {
-        interactionService.removeLike(postId, userId);
+        interactionService.removeLike(authHeader, req);
     }
 
     @GetMapping("/comments/{postId}")

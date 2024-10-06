@@ -1,9 +1,11 @@
 package com.backend.tomagram.service;
 
+import com.backend.tomagram.dto.InteractionRequest;
 import com.backend.tomagram.models.Comment;
 import com.backend.tomagram.models.Like;
 import com.backend.tomagram.repository.CommentRepository;
 import com.backend.tomagram.repository.LikeRepository;
+import com.backend.tomagram.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,20 +18,22 @@ import java.util.Optional;
 public class InteractionService {
     private final CommentRepository commentRepo;
     private final LikeRepository likeRepo;
-
+    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
 
     /**
      * Add a comment to a post.
-     * @param postId the ID of the post
-     * @param userId the ID of the user adding the comment
-     * @param content the comment content
+     * @param authHeader the authorization header carrying JWT
+     * @param interactionRequest the post_id and content of the comment
      * @return the saved Comment
      */
-    public Comment addComment(long postId, String userId, String content) {
+    public Comment addComment(String authHeader, InteractionRequest interactionRequest) {
+        final String jwt = jwtUtil.getJwt(authHeader);
+        final String username = jwtService.extractUsername(jwt);
         Comment comment = Comment.builder()
-                .postId(postId)
-                .userId(userId)
-                .content(content)
+                .postId(interactionRequest.getPostId())
+                .userId(username)
+                .content(interactionRequest.getContent())
                 .timestamp(LocalDateTime.now())
                 .build();
         return commentRepo.save(comment);
@@ -37,20 +41,23 @@ public class InteractionService {
 
     /**
      * Add a like to a post. If the user already liked the post, it does nothing.
-     * @param postId the ID of the post to like
-     * @param userId the ID of the user adding the like
+     * @param authHeader the authorization header carrying JWT
+     * @param interactionRequest the post_id and content of the comment
      * @return the saved Like
      */
-    public Like addLike(long postId, String userId) {
+    public Like addLike(String authHeader, InteractionRequest interactionRequest) {
+        final String jwt = jwtUtil.getJwt(authHeader);
+        final String username = jwtService.extractUsername(jwt);
+
         // Check if the user has already liked the post
-        Optional<Like> existingLike = likeRepo.findByPostIdAndUserId(postId, userId);
+        Optional<Like> existingLike = likeRepo.findByPostIdAndUserId(interactionRequest.getPostId(), username);
         if (existingLike.isPresent()) {
             throw new IllegalArgumentException("User has already liked this post.");
         }
 
         Like like = Like.builder()
-                .postId(postId)
-                .userId(userId)
+                .postId(interactionRequest.getPostId())
+                .userId(username)
                 .timestamp(LocalDateTime.now())
                 .build();
         return likeRepo.save(like);
@@ -58,11 +65,13 @@ public class InteractionService {
 
     /**
      * Remove a like from a post (unlike).
-     * @param postId the ID of the post
-     * @param userId the ID of the user removing the like
+     * @param authHeader the authorization header carrying JWT
+     * @param interactionRequest the post_id and content of the comment
      */
-    public void removeLike(long postId, String userId) {
-        likeRepo.deleteByPostIdAndUserId(postId, userId);
+    public void removeLike(String authHeader, InteractionRequest interactionRequest) {
+        final String jwt = jwtUtil.getJwt(authHeader);
+        final String username = jwtService.extractUsername(jwt);
+        likeRepo.deleteByPostIdAndUserId(interactionRequest.getPostId(), username);
     }
 
     /**
