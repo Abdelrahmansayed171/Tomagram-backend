@@ -4,6 +4,7 @@ import com.backend.feedservice.dto.NotificationsMarkRequest;
 import com.backend.feedservice.entity.Notification;
 import com.backend.feedservice.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,11 @@ import java.util.List;
 @Service
 public class NotificationService {
     private final NotificationRepository notificationRepo;
+    private final SimpMessagingTemplate messagingTemplate;
+
+    public void publishNotification(String receiver, Notification notification){
+        messagingTemplate.convertAndSend("/topic/notifications/" + receiver, notification);
+    }
 
     public void createNotification(String sender, String receiver, String type, String message){
         Notification notification = Notification
