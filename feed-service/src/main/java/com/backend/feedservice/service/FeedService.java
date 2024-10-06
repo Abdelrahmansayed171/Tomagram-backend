@@ -17,6 +17,7 @@ public class FeedService {
     private final StringRedisTemplate stringRedisTemplate;
     private final RedisTemplate<String, Object> redisTemplate;
     private final PostService postService;
+    private final NotificationService notificationService;
 
     /*
      * Computes a user's feed by retrieving all posts in the user's sorted set,
@@ -75,6 +76,12 @@ public class FeedService {
         postService.storePost(postRequest);
         for(String follower : followers){
             postService.addPostToUserFeed(follower, postRequest.getId(), postRequest.getCreatedAt());
+            notificationService.createNotification(
+                    postRequest.getUsername(),
+                    follower,
+                    "post",
+                    follower + " uploaded a new post!"
+                    );
         }
     }
 
