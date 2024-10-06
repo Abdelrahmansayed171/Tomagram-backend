@@ -18,9 +18,9 @@ public class Like {
     @Id
     private String id;
 
-    private long post_id;
+    private long postId;
 
-    private String user_id;
+    private String userId;
 
     private LocalDateTime timestamp;
 }

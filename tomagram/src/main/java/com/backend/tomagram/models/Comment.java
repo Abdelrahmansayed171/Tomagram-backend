@@ -19,9 +19,9 @@ public class Comment {
     @Id
     private String id;
 
-    private long post_id;
+    private long postId;
 
-    private String user_id;
+    private String userId;
 
     private String content;
 
