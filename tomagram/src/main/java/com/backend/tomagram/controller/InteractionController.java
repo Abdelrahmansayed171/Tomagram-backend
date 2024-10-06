@@ -1,5 +1,6 @@
 package com.backend.tomagram.controller;
 
+import com.backend.tomagram.dto.InteractionRequest;
 import com.backend.tomagram.models.Comment;
 import com.backend.tomagram.models.Like;
 import com.backend.tomagram.service.InteractionService;
@@ -15,26 +16,26 @@ public class InteractionController {
     private final InteractionService interactionService;
 
     @PostMapping("/comments")
-    public Comment addComment(@PathVariable long postId, @RequestParam String userId, @RequestBody String content) {
-        return interactionService.addComment(postId, userId, content);
+    public Comment addComment(@RequestHeader("Authorization") String authHeader,@RequestBody InteractionRequest req) {
+        return interactionService.addComment(authHeader, req);
     }
 
     @PostMapping("/likes")
-    public Like addLike(@PathVariable long postId, @RequestParam String userId) {
+    public Like addLike(@RequestHeader("Authorization") String authHeader,@RequestBody InteractionRequest req) {
         return interactionService.addLike(postId, userId);
     }
 
     @DeleteMapping("/likes")
-    public void removeLike(@PathVariable long postId, @RequestParam String userId) {
+    public void removeLike(@RequestHeader("Authorization") String authHeader,@RequestBody InteractionRequest req) {
         interactionService.removeLike(postId, userId);
     }
 
-    @GetMapping("/comments")
+    @GetMapping("/comments/{postId}")
     public List<Comment> getCommentsForPost(@PathVariable long postId) {
         return interactionService.getCommentsForPost(postId);
     }
 
-    @GetMapping("/likes")
+    @GetMapping("/likes/{postId}")
     public List<Like> getLikesForPost(@PathVariable long postId) {
         return interactionService.getLikesForPost(postId);
     }
