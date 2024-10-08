@@ -18,7 +18,7 @@ public class CommentDocument {
     @Id
     private String id;
     private String content;
-    private String postId;
+    private Long postId;
     private String userId;
     private LocalDateTime timestamp;
 }
