@@ -20,6 +20,7 @@ public class InteractionService {
     private final LikeRepository likeRepo;
     private final JwtUtil jwtUtil;
     private final JwtService jwtService;
+    private final IndexingService indexingService;
 
     /**
      * Add a comment to a post.
@@ -36,7 +37,13 @@ public class InteractionService {
                 .content(interactionRequest.getContent())
                 .timestamp(LocalDateTime.now())
                 .build();
-        return commentRepo.save(comment);
+        try {
+            commentRepo.save(comment);
+            indexingService.indexAllComments();
+        } catch (Exception e){
+            throw new RuntimeException("Error Saving new Comment or update indexing elastic search");
+        }
+        return comment;
     }
 
     /**

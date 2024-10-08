@@ -24,6 +24,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final FeedServiceInterface feedInterface;
     private final FollowsRepository followsRepository;
+    private final IndexingService indexingService;
 
     private void fanout(User user, Post post) {
         // create new PostRequest with complete fields (created from db object)
@@ -66,6 +67,7 @@ public class PostService {
             if (postRequest.getMediaUrls() != null && !postRequest.getMediaUrls().isEmpty()) {
                 addMediaUrlsToPost(post.getId(), postRequest.getMediaUrls());
             }
+            indexingService.indexAllPosts();
         } catch (Exception e) {
             throw new RuntimeException("Error Uploading post");
         }
