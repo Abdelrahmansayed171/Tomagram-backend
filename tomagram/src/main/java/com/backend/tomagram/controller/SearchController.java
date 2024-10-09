@@ -23,7 +23,7 @@ public class SearchController {
     @GetMapping("/posts")
     public ResponseEntity<List<PostDocument>> searchPosts(@RequestParam String keyword) {
         List<PostDocument> posts = searchService.searchPostsByContent(keyword);
-d
+
         if(posts.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
