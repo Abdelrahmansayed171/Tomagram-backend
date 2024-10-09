@@ -23,6 +23,11 @@ public class SearchController {
     @GetMapping("/posts")
     public ResponseEntity<List<PostDocument>> searchPosts(@RequestParam String keyword) {
         List<PostDocument> posts = searchService.searchPostsByContent(keyword);
+d
+        if(posts.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
@@ -30,6 +35,11 @@ public class SearchController {
     @GetMapping("/comments")
     public ResponseEntity<List<CommentDocument>> searchComments(@RequestParam String keyword) {
         List<CommentDocument> comments = searchService.searchCommentsByContent(keyword);
+
+        if(comments.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
