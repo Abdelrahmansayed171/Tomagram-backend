@@ -27,7 +27,9 @@ public class TomagramApplication {
     @Bean
     CommandLineRunner commandLineRunner(KafkaTemplate<String, String> kafkaTemplate){
         return args -> {
-            kafkaTemplate.send("tomagram", "Hello kafka");
+            for(int i = 1; i < 101; i++){
+                kafkaTemplate.send("tomagram", "Hello kafka <3 : " + i);
+            }
         };
     }
 }
