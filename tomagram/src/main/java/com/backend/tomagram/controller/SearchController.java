@@ -21,7 +21,7 @@ public class SearchController {
 
     // Endpoint to search posts by content keyword
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDocument>> searchPosts(@RequestParam String keyword) {
+    public ResponseEntity<List<PostDocument>> searchPosts(@RequestParam("keyword") String keyword) {
         List<PostDocument> posts = searchService.searchPostsByContent(keyword);
 
         if(posts.isEmpty()){
@@ -33,7 +33,7 @@ public class SearchController {
 
     // Endpoint to search comments by content keyword
     @GetMapping("/comments")
-    public ResponseEntity<List<CommentDocument>> searchComments(@RequestParam String keyword) {
+    public ResponseEntity<List<CommentDocument>> searchComments(@RequestParam("keyword") String keyword) {
         List<CommentDocument> comments = searchService.searchCommentsByContent(keyword);
 
         if(comments.isEmpty()){

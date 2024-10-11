@@ -19,14 +19,14 @@ public class ChatController {
     private final ChatService chatService;
 
     @GetMapping("/start")
-    public ResponseEntity<Conversation> startConversation(@RequestParam String usr1, @RequestParam String usr2){
+    public ResponseEntity<Conversation> startConversation(@RequestParam("usr1") String usr1, @RequestParam("usr2") String usr2){
         return ResponseEntity.ok(chatService.startPrivateConversation(usr1, usr2));
     }
 
     @PostMapping("/send/{conversationId}")
     public ResponseEntity<Message> sendMessage(@PathVariable String conversationId,
-                                               @RequestParam String content,
-                                               @RequestParam String sender){
+                                               @RequestParam("content") String content,
+                                               @RequestParam("sender") String sender){
         return ResponseEntity.ok(chatService.sendMessage(conversationId, content, sender));
     }
 
