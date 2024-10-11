@@ -1,7 +1,7 @@
 package com.backend.tomagram.service;
 
 import com.backend.tomagram.dto.*;
-import com.backend.tomagram.feign.FeedServiceInterface;
+//import com.backend.tomagram.feign.FeedServiceInterface;
 import com.backend.tomagram.models.Follows;
 import com.backend.tomagram.models.posts.Post;
 import com.backend.tomagram.models.users.User;
@@ -110,7 +110,7 @@ public class PostService {
                 .username(username)
                 .createdAt(TimeUtil.toCustomString(post.getCreatedAt()))
                 .build();
-        feedInterface.updatePost(postRequest);
+//        feedInterface.updatePost(postRequest);
     }
 
     public void deletePost(Long id) {
