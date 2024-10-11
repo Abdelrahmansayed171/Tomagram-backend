@@ -1,3 +1,4 @@
+/*
 package com.backend.tomagram.feign;
 
 import com.backend.tomagram.dto.PostRequest;
@@ -18,3 +19,4 @@ public interface FeedServiceInterface {
     @PostMapping("api/feed/seen")
     public void addPostToSeen(@RequestBody SeenPostRequest request);
 }
+*/
