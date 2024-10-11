@@ -3,7 +3,7 @@ package com.backend.tomagram.controller;
 import com.backend.tomagram.dto.PostRequest;
 import com.backend.tomagram.dto.PostUpdateRequest;
 import com.backend.tomagram.dto.UserPostsResponse;
-import com.backend.tomagram.feign.FeedServiceInterface;
+//import com.backend.tomagram.feign.FeedServiceInterface;
 import com.backend.tomagram.models.posts.Post;
 import com.backend.tomagram.service.PostService;
 import lombok.RequiredArgsConstructor;

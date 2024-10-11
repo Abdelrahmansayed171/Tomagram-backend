@@ -22,7 +22,7 @@ public class PostService {
     private final JwtUtil jwtUtil;
     private final JwtService jwtService;
     private final PostRepository postRepository;
-    private final FeedServiceInterface feedInterface;
+//    private final FeedServiceInterface feedInterface;
     private final FollowsRepository followsRepository;
     private final IndexingService indexingService;
 
@@ -47,7 +47,7 @@ public class PostService {
         UploadRequest uploadRequest = new UploadRequest(postRequest, userFollowers);
 
         // call FEED-SERVICE method to make fanout functionality using redis
-        feedInterface.addFeed(uploadRequest);
+//        feedInterface.addFeed(uploadRequest);
     }
 
     public void upload(String authHeader, PostRequest postRequest) {
