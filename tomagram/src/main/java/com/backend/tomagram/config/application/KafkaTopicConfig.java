@@ -8,9 +8,17 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class KafkaTopicConfig {
     @Bean
-    public NewTopic tomagramTopic(){
-        return TopicBuilder
-                .name("tomagram")
-                .build();
+    public NewTopic feedTopic() {
+        return TopicBuilder.name("tomagram-feed").build();
+    }
+
+    @Bean
+    public NewTopic updateTopic() {
+        return TopicBuilder.name("tomagram-update").build();
+    }
+
+    @Bean
+    public NewTopic seenTopic() {
+        return TopicBuilder.name("tomagram-seen").build();
     }
 }
