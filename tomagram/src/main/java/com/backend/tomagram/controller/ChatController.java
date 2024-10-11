@@ -3,7 +3,7 @@ package com.backend.tomagram.controller;
 import com.backend.tomagram.models.Conversation;
 import com.backend.tomagram.models.Message;
 import com.backend.tomagram.service.ChatService;
-import jakarta.ws.rs.Path;
+//import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
