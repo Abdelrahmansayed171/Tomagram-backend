@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PutMapping("/bio")
-    public ResponseEntity<String> updateUserBio(@RequestHeader("Authorization") String authHeader,
+    public ResponseEntity<String> updateUserBio(@RequestHeader(value = "Authorization", required = false) String authHeader,
                                                 @RequestBody BioUpdateRequest bioUpdateRequest){
 
         return userService.updateBio(authHeader, bioUpdateRequest.getBio());
