@@ -29,7 +29,17 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // Check Notion my CSRF Documentation
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/api/auth/**").permitAll()// make login, register routes as public routes
+                                .requestMatchers(
+                                        "/api/auth/**",
+                                        "/v2/api-docs",
+                                        "/v3/api-docs/**",
+                                        "/configuration/ui",
+                                        "/swagger-resources/**",
+                                        "/configuration/security",
+                                        "/swagger-ui.html",
+                                        "/webjars/**",
+                                        "swagger-ui/**"
+                                ).permitAll()// make login, register routes as public routes
                                 .anyRequest().authenticated()) // another route needs to be authenticated with a valid JWT
                 .sessionManagement( session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // our application implements stateless JWT authentication
