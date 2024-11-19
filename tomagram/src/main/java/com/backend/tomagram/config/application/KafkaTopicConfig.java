@@ -1,3 +1,4 @@
+/*
 package com.backend.tomagram.config.application;
 
 import org.apache.kafka.clients.admin.NewTopic;
@@ -22,3 +23,4 @@ public class KafkaTopicConfig {
         return TopicBuilder.name("tomagram-seen").build();
     }
 }
+*/

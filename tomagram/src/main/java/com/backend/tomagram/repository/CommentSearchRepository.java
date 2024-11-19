@@ -1,3 +1,4 @@
+/*
 package com.backend.tomagram.repository;
 
 import com.backend.tomagram.models.CommentDocument;
@@ -9,3 +10,4 @@ public interface CommentSearchRepository extends ElasticsearchRepository<Comment
     List<CommentDocument> findByContentContaining(String content);
     List<CommentDocument> findByPostId(Long postId);
 }
+*/

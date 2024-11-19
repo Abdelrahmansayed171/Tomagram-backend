@@ -1,3 +1,4 @@
+/*
 package com.backend.tomagram.service;
 
 import com.backend.tomagram.dto.PostRequest;
@@ -17,7 +18,7 @@ public class FeedService {
         kafkaTemplate.send("tomagram-feed", request);
     }
 
-    public void updatePost(PostRequest request) {
+    public void updatePost(PostRequest request) {z
         // Send the PostRequest object to Kafka
         kafkaTemplate.send("tomagram-update", request);
     }
@@ -27,3 +28,4 @@ public class FeedService {
         kafkaTemplate.send("tomagram-seen", request);
     }
 }
+*/
