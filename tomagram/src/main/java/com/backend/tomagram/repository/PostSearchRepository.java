@@ -1,4 +1,3 @@
-/*
 package com.backend.tomagram.repository;
 
 import com.backend.tomagram.models.PostDocument;
@@ -11,4 +10,3 @@ public interface PostSearchRepository extends ElasticsearchRepository<PostDocume
     List<PostDocument> findByContentContaining(String content);
     List<PostDocument> findByLocation(String location);
 }
-*/
