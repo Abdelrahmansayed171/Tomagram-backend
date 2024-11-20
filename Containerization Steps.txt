@@ -18,6 +18,7 @@
 12. pull mongodb image
 13. run container with mongo image
 		docker run --name mongodb --network tomagram-net -p 27017:27017 -e MONGO_INITDB_DATABASE=tomagram -d mongo:latest
+-- edit application.properties
 14. pull zookeeper image 
 		docker pull confluentinc/cp-zookeeper
 15. run zookeeper container 
@@ -26,3 +27,13 @@
 		docker pull confluentinc/cp-kafka:latest
 17. run kafka container
 		docker run --name kafka --network tomagram-net -p 9092:9092 --link zookeeper -e KAFKA_BROKER_ID=1 -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 -d  confluentinc/cp-kafka:latest
+-- edit application.properties
+18. pull elasticsearch image
+		docker pull docker.elastic.co/elasticsearch/elasticsearch:8.6.1
+19. run container 
+		docker run -d --name elasticsearch --network tomagram-net -p 9200:9200 -p 9300:9300 -e discovery.type=single-node -e xpack.security.enabled=false -e "ES_JAVA_OPTS=-Xmx512m -Xms512m" docker.elastic.co/elasticsearch/elasticsearch:8.6.1
+-- edit application.properties
+20. create feed-service dockerfile
+21. update application.properties
+22. run container
+		docker run --name feed-service --network tomagram-net -p 8085:8085 -d feed-service:latest
