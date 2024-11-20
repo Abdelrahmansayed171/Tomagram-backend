@@ -1,0 +1,17 @@
+1. Elasticsearch removed
+2. Kafka dependency removed
+3. Kafka Code communicating feed services removed
+4. Pull official mysql image
+5. create bridge network between 2 services
+		docker network create tomagram-net
+		docker network ls
+6. Run MySQL container with our database, mysql config, users password
+		docker run --name mysqldb --network tomagram-net -e MYSQL_DATABASE=tomagram -e MYSQL_ROOT_PASSWORD= -e MYSQL_ALLOW_EMPTY_PASSWORD=true -d mysql:latest
+7. change spring application.properties to container name (mysqldb)
+8. build a jar (in terminal)
+		./mvnw clean package -DskipTests
+9. create Dockerfile
+10. Construct image from Dockerfile
+		docker build -t tomagram .
+11. Run Container with image
+		docker run --name tomagram-service --network tomagram-net -p 8080:8080 -d tomagram:latest
