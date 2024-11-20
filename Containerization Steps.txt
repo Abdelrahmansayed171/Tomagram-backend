@@ -15,3 +15,14 @@
 		docker build -t tomagram .
 11. Run Container with image
 		docker run --name tomagram-service --network tomagram-net -p 8080:8080 -d tomagram:latest
+12. pull mongodb image
+13. run container with mongo image
+		docker run --name mongodb --network tomagram-net -p 27017:27017 -e MONGO_INITDB_DATABASE=tomagram -d mongo:latest
+14. pull zookeeper image 
+		docker pull confluentinc/cp-zookeeper
+15. run zookeeper container 
+		docker run -d --name zookeeper --network tomagram-net -p 2181:2181 -e ZOOKEEPER_CLIENT_PORT=2181 -e ZOOKEEPER_TICK_TIME=2000 confluentinc/cp-zookeeper:latest
+16. pull kafka image
+		docker pull confluentinc/cp-kafka:latest
+17. run kafka container
+		docker run --name kafka --network tomagram-net -p 9092:9092 --link zookeeper -e KAFKA_BROKER_ID=1 -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 -d  confluentinc/cp-kafka:latest

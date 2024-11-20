@@ -1,4 +1,3 @@
-/*
 package com.backend.tomagram.config.application;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -42,4 +41,3 @@ public class KafkaProducerConfig {
     }
 
 }
-*/
