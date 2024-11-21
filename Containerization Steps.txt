@@ -6,7 +6,7 @@
 		docker network create tomagram-net
 		docker network ls
 6. Run MySQL container with our database, mysql config, users password
-		docker run --name mysqldb --network tomagram-net -e MYSQL_DATABASE=tomagram -e MYSQL_ROOT_PASSWORD= -e MYSQL_ALLOW_EMPTY_PASSWORD=true -d mysql:latest
+		docker run --name mysqldb --network tomagram-net -p 3306:3306 -e MYSQL_DATABASE=tomagram -e MYSQL_ROOT_PASSWORD= -e MYSQL_ALLOW_EMPTY_PASSWORD=true -d mysql:latest
 7. change spring application.properties to container name (mysqldb)
 8. build a jar (in terminal)
 		./mvnw clean package -DskipTests
