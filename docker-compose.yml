@@ -73,7 +73,7 @@ services:
 
   tomagram-service:
     build:
-      context: .
+      context: ./tomagram
       dockerfile: Dockerfile
     container_name: tomagram-service
     networks:
@@ -88,7 +88,7 @@ services:
 
   feed-service:
     build:
-      context: ../feed-service
+      context: ./feed-service
       dockerfile: Dockerfile
     container_name: feed-service
     networks:

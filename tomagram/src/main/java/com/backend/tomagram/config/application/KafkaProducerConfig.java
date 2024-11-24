@@ -15,29 +15,43 @@ import java.util.Map;
 
 @Configuration
 public class KafkaProducerConfig {
+
     @Value("${spring.kafka.bootstrap-servers}") // from application.properties
     private String bootstrapServers;
 
-    public Map<String, Object> producerConfig(){
-        HashMap<String, Object> props = new HashMap<>();
-        // setup bootstrap server connection with the producer
+    // Common Producer Configuration
+    private Map<String, Object> producerConfig() {
+        Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        // define key, value data types to be stored in kafka
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        // use JsonSerializer to serialize the objects into JSON format
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         return props;
     }
 
+    // ProducerFactory for String-String
     @Bean
-    // if you produce string data, so ProducerFactory<__, String> data is defined in value arg
-    public ProducerFactory<String, String> producerFactory(){
-        return new DefaultKafkaProducerFactory<>(producerConfig());
+    public ProducerFactory<String, String> stringProducerFactory() {
+        Map<String, Object> config = producerConfig();
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        return new DefaultKafkaProducerFactory<>(config);
     }
 
     @Bean
-    public KafkaTemplate<String, Object> kafkaTemplate(ProducerFactory<String, Object> producerFactory){
-        return new KafkaTemplate<>(producerFactory);
+    public KafkaTemplate<String, String> stringKafkaTemplate() {
+        return new KafkaTemplate<>(stringProducerFactory());
     }
 
+    // ProducerFactory for String-Object
+    @Bean
+    public ProducerFactory<String, Object> objectProducerFactory() {
+        Map<String, Object> config = producerConfig();
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        return new DefaultKafkaProducerFactory<>(config);
+    }
+
+    @Bean
+    public KafkaTemplate<String, Object> objectKafkaTemplate() {
+        return new KafkaTemplate<>(objectProducerFactory());
+    }
 }
+
