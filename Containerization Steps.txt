@@ -26,7 +26,7 @@
 16. pull kafka image
 		docker pull confluentinc/cp-kafka:latest
 17. run kafka container
-		docker run --name kafka --network tomagram-net -p 9092:9092 --link zookeeper -e KAFKA_BROKER_ID=1 -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 -d  confluentinc/cp-kafka:latest
+		docker run --name kafka --network tomagram-net -p 9092:9092 --link zookeeper -e KAFKA_BROKER_ID=1 -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 -d  confluentinc/cp-kafka:7.4.0
 -- edit application.properties
 18. pull elasticsearch image
 		docker pull docker.elastic.co/elasticsearch/elasticsearch:8.6.1
