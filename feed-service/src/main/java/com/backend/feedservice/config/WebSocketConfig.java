@@ -15,4 +15,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         config.setApplicationDestinationPrefixes("/app");
     }
 
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        //  Adds a WebSocket endpoint at the path /chat.
+        registry.addEndpoint("/notification");
+    }
 }
