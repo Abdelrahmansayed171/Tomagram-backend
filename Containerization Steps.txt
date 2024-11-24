@@ -36,4 +36,8 @@
 20. create feed-service dockerfile
 21. update application.properties
 22. run container
-		docker run --name feed-service --network tomagram-net -p 8085:8085 -d feed-service:latest
+		docker run --name feed-service -e REDIS_PORT=6379 --network tomagram-net -p 8085:8085 -d feed-service:latest
+23. pull redis image
+		docker pull redis
+24. run redis container 
+		docker run --name tomagram-redis -d -p 6379:6379 redis
