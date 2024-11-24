@@ -41,10 +41,8 @@ public class RedisConfig {
     @Bean
     public LettuceConnectionFactory connectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setHostName("redis-18837.c14.us-east-1-3.ec2.redns.redis-cloud.com");
+        configuration.setHostName("tomagram-redis");
         configuration.setPort(Integer.parseInt(System.getenv("REDIS_PORT")));
-        configuration.setUsername(System.getenv("REDIS_USERNAME"));
-        configuration.setPassword(System.getenv("REDIS_PASSWORD"));
         return new LettuceConnectionFactory(configuration);
     }
 //
